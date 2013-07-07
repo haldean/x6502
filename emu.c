@@ -50,6 +50,7 @@ void main_loop(cpu *m) {
             #include "store.h"
             #include "transfer.h"
             #include "stack.h"
+            #include "logical.h"
 
             default:
                 printf("ERROR: got unknown opcode %02x\n", opcode);
@@ -61,6 +62,10 @@ void main_loop(cpu *m) {
             // interruption!
             cycles_until_interrupt = INTERRUPT_PERIOD;
         }
+
+#ifdef DEBUG
+        m->last_opcode = opcode;
+#endif
     }
 end:
     return;

@@ -1,7 +1,7 @@
 Instructions:
 
 [ ] ADC
-[ ] AND
+[X] AND
 [ ] ASL
 [ ] BCC
 [ ] BCS
@@ -23,7 +23,7 @@ Instructions:
 [ ] DEC
 [ ] DEX
 [ ] DEY
-[ ] EOR
+[X] EOR
 [ ] INC
 [ ] INX
 [ ] INY
@@ -34,7 +34,7 @@ Instructions:
 [X] LDY
 [ ] LSR
 [ ] NOP
-[ ] ORA
+[X] ORA
 [ ] PHA
 [ ] PHP
 [ ] PLA
