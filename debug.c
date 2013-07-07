@@ -1,12 +1,20 @@
 #include "debug.h"
+#include "debug-names.h"
 #include <stdio.h>
 
 #define MEM_PRINT_BYTES 16
 
 void dump_cpu(cpu *m) {
+    init_names();
+
     int i;
     printf("pc %04X\nx %02X y %02X sp %02X sr %02X ac %02X",
             m->pc, m->x, m->y, m->sp, m->sr, m->ac);
+
+    printf("\nlast opcode: %s (%02X)",
+            inst_names[m->last_opcode], m->last_opcode);
+    printf(", next opcode: %s (%02X)",
+            inst_names[m->mem[m->pc]], m->mem[m->pc]);
 
     printf("\nflags n %d o %d b %d d %d i %d z %d c %d",
             (m->sr & FLAG_NEGATIVE) > 0,

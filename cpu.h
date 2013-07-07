@@ -29,6 +29,10 @@ typedef struct {
     // status register
     uint8_t sr;
 
+#ifdef DEBUG
+    uint8_t last_opcode;
+#endif
+
     // RAM
     uint8_t mem[MEMORY_SIZE];
 } cpu;
