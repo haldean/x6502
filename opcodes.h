@@ -28,6 +28,11 @@
 
 #define NOP     0xEA
 
+#define PHA     0x48
+#define PHP     0x08
+#define PLA     0x68
+#define PLP     0x28
+
 #define STA_AB  0x8D
 #define STA_ABX 0x9D
 #define STA_ABY 0x99

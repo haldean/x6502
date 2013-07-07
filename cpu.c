@@ -4,8 +4,9 @@
 
 cpu * new_cpu() {
     cpu *m = malloc(sizeof(cpu));
-    m->pc = 0;
-    m->sr = 0;
+    m->pc = 0x00;
+    m->sr = 0x00;
+    m->sp = 0xFF;
     memset(m->mem, 0xFF, MEMORY_SIZE);
     return m;
 }

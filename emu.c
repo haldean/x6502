@@ -49,6 +49,7 @@ void main_loop(cpu *m) {
             #include "load.h"
             #include "store.h"
             #include "transfer.h"
+            #include "stack.h"
 
             default:
                 printf("ERROR: got unknown opcode %02x\n", opcode);
