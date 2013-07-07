@@ -25,18 +25,35 @@ static inline void set_flag(cpu *m, uint8_t flag, uint8_t set) {
     }
 }
 
+static inline uint8_t get_flag(cpu *m, uint8_t flag) {
+    return (m->sr & flag) > 0;
+}
+
 static inline void set_flags(cpu *m, uint8_t val) {
     set_flag(m, FLAG_ZERO, !val);
     set_flag(m, FLAG_NEGATIVE, val & 0x80);
 }
 
+static inline uint8_t bcd(uint8_t val) {
+    // bcd is "binary coded decimal"; it treats the upper nibble and lower
+    // nibble of a byte each as a decimal digit, so 01011000 -> 0101 1000 -> 58.
+    // in other words, treat hex output as decimal output, so 0x58 is treated as
+    // 58. this is dumb and adds a bunch of branching to opcode interpretation
+    // that I Do Not Like.
+    return 10 * (val >> 4) + (0x0F & val);
+}
+
 void main_loop(cpu *m) {
     uint32_t cycles_until_interrupt = INTERRUPT_PERIOD;
+
+    uint8_t opcode;
+    uint8_t arg1, arg2, t1;
+    uint16_t r1;
+
     for (;;) {
         DUMP(m);
 
-        uint8_t opcode = NEXT_BYTE(m);
-        uint8_t arg1, arg2, t1;
+        opcode = NEXT_BYTE(m);
         switch (opcode) {
             case BRK:
                 goto end;
@@ -50,6 +67,7 @@ void main_loop(cpu *m) {
             #include "transfer.h"
             #include "stack.h"
             #include "logical.h"
+            #include "arithmetic.h"
 
             default:
                 printf("ERROR: got unknown opcode %02x\n", opcode);

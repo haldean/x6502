@@ -4,13 +4,9 @@
 
 uint8_t prog[] = {
     LDA_IMM,
-    0xF0,
-    STA_ZP,
-    0x0F,
-    LDA_IMM,
-    0x04,
-    BIT_ZP,
-    0x0F,
+    0x01,
+    ADC_IMM,
+    0x01,
     BRK,
 };
 

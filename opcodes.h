@@ -23,6 +23,15 @@
 //      ZPX: zero-page,X, add next byte to X modulo 0xFF and use that as a
 //           memory address
 
+#define ADC_AB  0x6D
+#define ADC_ABX 0x7D
+#define ADC_ABY 0x79
+#define ADC_IMM 0x69
+#define ADC_INX 0x61
+#define ADC_INY 0x71
+#define ADC_ZP  0x65
+#define ADC_ZPX 0x75
+
 #define AND_AB  0x2D
 #define AND_ABX 0x3D
 #define AND_ABY 0x39
