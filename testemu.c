@@ -5,8 +5,9 @@
 uint8_t prog[] = {
     LDA_IMM,
     0x81,
-    PHP,
     PHA,
+    PHP,
+    PLA,
     BRK,
 };
 
