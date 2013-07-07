@@ -3,8 +3,18 @@
 #include "opcodes.h"
 #include <stdio.h>
 
-static inline uint8_t mem_abs(cpu *m, uint8_t low, uint8_t high) {
-    return m->mem[(uint16_t) low + ((uint16_t) high << 8)];
+#define ZP(x) ((uint8_t) (x))
+
+static inline size_t mem_abs(uint8_t low, uint8_t high, uint8_t off) {
+    return (uint16_t) off + (uint16_t) low + ((uint16_t) high << 8);
+}
+
+static inline size_t mem_indirect_index(cpu *m, uint8_t addr, uint8_t off) {
+    return mem_abs(m->mem[addr], m->mem[addr+1], off);
+}
+
+static inline size_t mem_indexed_indirect(cpu *m, uint8_t addr, uint8_t off) {
+    return mem_abs(m->mem[addr+off], m->mem[addr+off+1], 0);
 }
 
 static inline void set_flags(cpu *m, uint8_t val) {
@@ -33,26 +43,11 @@ void main_loop(cpu *m) {
                 goto end;
                 break;
 
-            case LDA_AB:
-                arg1 = NEXT_BYTE(m);
-                arg2 = NEXT_BYTE(m);
-                m->ac = mem_abs(m, arg1, arg2);
+            case NOP:
                 break;
 
-            case LDA_IMM:
-                m->ac = NEXT_BYTE(m);
-                set_flags(m, m->ac);
-                break;
-
-            case LDX_IMM:
-                m->x = NEXT_BYTE(m);
-                set_flags(m, m->x);
-                break;
-
-            case LDY_IMM:
-                m->y = NEXT_BYTE(m);
-                set_flags(m, m->y);
-                break;
+            #include "ld.h"
+            #include "st.h"
 
             default:
                 printf("ERROR: got unknown opcode %02x\n", opcode);

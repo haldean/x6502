@@ -26,4 +26,22 @@
 #define LDY_ZP  0xA4
 #define LDY_ZPX 0xB4
 
+#define NOP     0xEA
+
+#define STA_AB  0x8D
+#define STA_ABX 0x9D
+#define STA_ABY 0x99
+#define STA_INX 0x81
+#define STA_INY 0x91
+#define STA_ZP  0x85
+#define STA_ZPX 0x95
+
+#define STX_ZP  0x86
+#define STX_ZPY 0x96
+#define STX_AB  0x8E
+
+#define STY_ZP  0x84
+#define STY_ZPX 0x94
+#define STY_AB  0x8C
+
 #endif
