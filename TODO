@@ -50,9 +50,9 @@ Instructions:
 [X] STA
 [X] STX
 [X] STY
-[ ] TAX
-[ ] TAY
-[ ] TSX
-[ ] TXA
-[ ] TXS
-[ ] TYA
+[X] TAX
+[X] TAY
+[X] TSX
+[X] TXA
+[X] TXS
+[X] TYA

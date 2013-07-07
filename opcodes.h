@@ -44,4 +44,11 @@
 #define STY_ZPX 0x94
 #define STY_AB  0x8C
 
+#define TAX     0xAA
+#define TAY     0xA8
+#define TSX     0xBA
+#define TXA     0x8A
+#define TXS     0x9A
+#define TYA     0x98
+
 #endif

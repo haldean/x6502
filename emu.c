@@ -46,8 +46,9 @@ void main_loop(cpu *m) {
             case NOP:
                 break;
 
-            #include "ld.h"
-            #include "st.h"
+            #include "load.h"
+            #include "store.h"
+            #include "transfer.h"
 
             default:
                 printf("ERROR: got unknown opcode %02x\n", opcode);
