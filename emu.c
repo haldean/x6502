@@ -17,18 +17,17 @@ static inline size_t mem_indexed_indirect(cpu *m, uint8_t addr, uint8_t off) {
     return mem_abs(m->mem[addr+off], m->mem[addr+off+1], 0);
 }
 
-static inline void set_flags(cpu *m, uint8_t val) {
-    if (val == 0) {
-        m->sr |= FLAG_ZERO;
+static inline void set_flag(cpu *m, uint8_t flag, uint8_t set) {
+    if (set) {
+        m->sr |= flag;
     } else {
-        m->sr &= ~FLAG_ZERO;
+        m->sr &= ~flag;
     }
+}
 
-    if (val & 0x80) {
-        m->sr |= FLAG_NEGATIVE;
-    } else {
-        m->sr &= ~FLAG_NEGATIVE;
-    }
+static inline void set_flags(cpu *m, uint8_t val) {
+    set_flag(m, FLAG_ZERO, !val);
+    set_flag(m, FLAG_NEGATIVE, val & 0x80);
 }
 
 void main_loop(cpu *m) {
@@ -37,7 +36,7 @@ void main_loop(cpu *m) {
         DUMP(m);
 
         uint8_t opcode = NEXT_BYTE(m);
-        uint8_t arg1, arg2;
+        uint8_t arg1, arg2, t1;
         switch (opcode) {
             case BRK:
                 goto end;

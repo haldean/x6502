@@ -32,6 +32,9 @@
 #define AND_ZP  0x25
 #define AND_ZPX 0x35
 
+#define BIT_AB  0x2C
+#define BIT_ZP  0x24
+
 #define BRK     0x00
 
 #define EOR_AB  0x4D

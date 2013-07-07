@@ -135,3 +135,19 @@ case ORA_INY:
     m->ac |= m->mem[mem_indirect_index(m, NEXT_BYTE(m), m->y)];
     set_flags(m, m->ac);
     break;
+
+case BIT_AB:
+    arg1 = NEXT_BYTE(m);
+    arg2 = NEXT_BYTE(m);
+    t1 = m->mem[mem_abs(arg1, arg2, 0)];
+    set_flag(m, FLAG_ZERO, !(t1 & m->ac));
+    set_flag(m, FLAG_OVERFLOW, t1 & 0x40);
+    set_flag(m, FLAG_NEGATIVE, t1 & 0x80);
+    break;
+
+case BIT_ZP:
+    t1 = m->mem[NEXT_BYTE(m)];
+    set_flag(m, FLAG_ZERO, !(t1 & m->ac));
+    set_flag(m, FLAG_OVERFLOW, t1 & 0x40);
+    set_flag(m, FLAG_NEGATIVE, t1 & 0x80);
+    break;

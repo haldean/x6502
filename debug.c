@@ -29,6 +29,13 @@ void dump_cpu(cpu *m) {
     for (i = 0; i < MEM_PRINT_BYTES; i++) {
         printf("%02X ", m->mem[i]);
     }
+    if (m->pc < MEM_PRINT_BYTES) {
+        printf("\n      ");
+        for (i = 0; i < m->pc; i++) {
+            printf("   ");
+        }
+        printf("^^");
+    }
 
     printf("\nstack ");
     for (i = 0; i < MEM_PRINT_BYTES; i++) {
