@@ -17,9 +17,9 @@ Instructions:
 [ ] CLD
 [ ] CLI
 [ ] CLV
-[ ] CMP
-[ ] CPX
-[ ] CPY
+[X] CMP
+[X] CPX
+[X] CPY
 [ ] DEC
 [ ] DEX
 [ ] DEY
