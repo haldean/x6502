@@ -1,6 +1,6 @@
 Instructions:
 
-[ ] ADC
+[X] ADC
 [X] AND
 [ ] ASL
 [ ] BCC
@@ -43,7 +43,7 @@ Instructions:
 [ ] ROR
 [ ] RTI
 [ ] RTS
-[ ] SBC
+[X] SBC
 [ ] SEC
 [ ] SED
 [ ] SEI
