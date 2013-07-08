@@ -46,14 +46,22 @@
 
 #define BRK     0x00
 
-#define CMP_IMM 0xC9
-#define CMP_ZP  0xC5
-#define CMP_ZPX 0xD5
 #define CMP_AB  0xCD
 #define CMP_ABX 0xDD
 #define CMP_ABY 0xD9
+#define CMP_IMM 0xC9
 #define CMP_INX 0xC1
 #define CMP_INY 0xD1
+#define CMP_ZP  0xC5
+#define CMP_ZPX 0xD5
+
+#define CPX_AB  0xEC
+#define CPX_IMM 0xE0
+#define CPX_ZP  0xE4
+
+#define CPY_AB  0xCC
+#define CPY_IMM 0xC0
+#define CPY_ZP  0xC4
 
 #define EOR_AB  0x4D
 #define EOR_ABX 0x5D
