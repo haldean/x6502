@@ -17,7 +17,8 @@ static inline size_t mem_indexed_indirect(cpu *m, uint8_t addr, uint8_t off) {
     return mem_abs(m->mem[addr+off], m->mem[addr+off+1], 0);
 }
 
-static inline void set_flag(cpu *m, uint8_t flag, uint8_t set) {
+// set arg MUST be 16 bits, not 8, so that add results can fit into set.
+static inline void set_flag(cpu *m, uint8_t flag, uint16_t set) {
     if (set) {
         m->sr |= flag;
     } else {
