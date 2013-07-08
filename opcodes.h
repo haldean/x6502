@@ -92,6 +92,15 @@
 #define PLA     0x68
 #define PLP     0x28
 
+#define SBC_IMM 0xE9
+#define SBC_ZP  0xE5
+#define SBC_ZPX 0xF5
+#define SBC_AB  0xED
+#define SBC_ABX 0xFD
+#define SBC_ABY 0xF9
+#define SBC_INX 0xE1
+#define SBC_INY 0xF1
+
 #define STA_AB  0x8D
 #define STA_ABX 0x9D
 #define STA_ABY 0x99

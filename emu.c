@@ -44,6 +44,8 @@ static inline uint8_t bcd(uint8_t val) {
     return 10 * (val >> 4) + (0x0F & val);
 }
 
+#include "functions.h"
+
 void main_loop(cpu *m) {
     uint32_t cycles_until_interrupt = INTERRUPT_PERIOD;
 

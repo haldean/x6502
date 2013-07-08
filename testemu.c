@@ -8,11 +8,9 @@ uint8_t prog[] = {
     STA_ZP,
     0x0F,
     LDA_IMM,
-    0xFF,
-    ADC_ZP,
+    0x02,
+    SBC_ZP,
     0x0F,
-    ADC_IMM,
-    0xF0,
     BRK,
 };
 
