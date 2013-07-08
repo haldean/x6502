@@ -20,13 +20,13 @@ Instructions:
 [X] CMP
 [X] CPX
 [X] CPY
-[ ] DEC
-[ ] DEX
-[ ] DEY
+[X] DEC
+[X] DEX
+[X] DEY
 [X] EOR
-[ ] INC
-[ ] INX
-[ ] INY
+[X] INC
+[X] INX
+[X] INY
 [ ] JMP
 [ ] JSR
 [X] LDA

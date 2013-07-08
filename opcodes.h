@@ -63,6 +63,14 @@
 #define CPY_IMM 0xC0
 #define CPY_ZP  0xC4
 
+#define DEC_AB  0xCE
+#define DEC_ABX 0xDE
+#define DEC_ZP  0xC6
+#define DEC_ZPX 0xD6
+
+#define DEX     0xCA
+#define DEY     0x88
+
 #define EOR_AB  0x4D
 #define EOR_ABX 0x5D
 #define EOR_ABY 0x59
@@ -71,6 +79,14 @@
 #define EOR_INY 0x51
 #define EOR_ZP  0x45
 #define EOR_ZPX 0x55
+
+#define INC_AB  0xEE
+#define INC_ABX 0xFE
+#define INC_ZP  0xE6
+#define INC_ZPX 0xF6
+
+#define INX     0xE8
+#define INY     0xC8
 
 #define LDA_AB  0xAD
 #define LDA_ABX 0xBD

@@ -3,11 +3,8 @@
 #include "opcodes.h"
 
 uint8_t prog[] = {
-    LDY_IMM,
-    0xA2,
-    CPY_AB,
-    0x00,
-    0x00,
+    INC_ZP,
+    0x0F,
     BRK,
 };
 

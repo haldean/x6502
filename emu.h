@@ -3,6 +3,8 @@
 
 #include "cpu.h"
 
+#define ZP(x) ((uint8_t) (x))
+
 void main_loop(cpu *m);
 
 #endif

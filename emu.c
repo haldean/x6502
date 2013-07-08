@@ -1,11 +1,9 @@
-#include "debug.h"
 #include "emu.h"
-#include "opcodes.h"
+
 #include <stdio.h>
-
-#define ZP(x) ((uint8_t) (x))
-
+#include "debug.h"
 #include "functions.h"
+#include "opcodes.h"
 
 void main_loop(cpu *m) {
     uint32_t cycles_until_interrupt = INTERRUPT_PERIOD;
@@ -33,6 +31,7 @@ void main_loop(cpu *m) {
             #include "logical.h"
             #include "arithmetic.h"
             #include "compare.h"
+            #include "incdec.h"
 
             default:
                 printf("ERROR: got unknown opcode %02x\n", opcode);
