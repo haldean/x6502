@@ -2,7 +2,7 @@ Instructions:
 
 [X] ADC
 [X] AND
-[ ] ASL
+[X] ASL
 [ ] BCC
 [ ] BCS
 [ ] BEQ
@@ -32,7 +32,7 @@ Instructions:
 [X] LDA
 [X] LDX
 [X] LDY
-[ ] LSR
+[X] LSR
 [X] NOP
 [X] ORA
 [X] PHA

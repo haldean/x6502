@@ -32,6 +32,7 @@ void main_loop(cpu *m) {
             #include "arithmetic.h"
             #include "compare.h"
             #include "incdec.h"
+            #include "shift.h"
 
             default:
                 printf("ERROR: got unknown opcode %02x\n", opcode);

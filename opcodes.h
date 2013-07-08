@@ -11,6 +11,7 @@
 //      ABX: absolute,X, next two bytes are added to the value in register X to
 //           get the memory address
 //      ABY: same as ABX, except the value of register Y is used instead of X
+//      ACC: act on the value in the accumulator
 //      IMM: next byte is a constant to be used instead of a lookup
 //      INX: (indirect,X) mode, add X to the following byte, modulo 0xFF, and
 //           lookup two bytes starting at that location. Those two bytes form
@@ -40,6 +41,12 @@
 #define AND_INY 0x31
 #define AND_ZP  0x25
 #define AND_ZPX 0x35
+
+#define ASL_AB  0x0E
+#define ASL_ABX 0x1E
+#define ASL_ACC 0x0A
+#define ASL_ZP  0x06
+#define ASL_ZPX 0x16
 
 #define BIT_AB  0x2C
 #define BIT_ZP  0x24
@@ -108,6 +115,12 @@
 #define LDY_IMM 0xA0
 #define LDY_ZP  0xA4
 #define LDY_ZPX 0xB4
+
+#define LSR_AB  0x4E
+#define LSR_ABX 0x5E
+#define LSR_ACC 0x4A
+#define LSR_ZP  0x46
+#define LSR_ZPX 0x56
 
 #define ORA_IMM 0x09
 #define ORA_ZP  0x05
