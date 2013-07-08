@@ -72,4 +72,10 @@ static inline void sub(cpu *m, uint16_t r1) {
     m->ac = r1;
 }
 
+static inline void cmp(cpu *m, uint8_t r1) {
+    set_flag(m, FLAG_CARRY, m->ac >= r1);
+    set_flag(m, FLAG_ZERO, m->ac == r1);
+    set_flag(m, FLAG_NEGATIVE, 0x80 & (m->ac - r1));
+}
+
 #endif

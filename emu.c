@@ -32,6 +32,7 @@ void main_loop(cpu *m) {
             #include "stack.h"
             #include "logical.h"
             #include "arithmetic.h"
+            #include "compare.h"
 
             default:
                 printf("ERROR: got unknown opcode %02x\n", opcode);
