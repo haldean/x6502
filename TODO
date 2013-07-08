@@ -6,11 +6,11 @@ Instructions:
 [ ] BCC
 [ ] BCS
 [ ] BEQ
-[ ] BIT
+[X] BIT
 [ ] BMI
 [ ] BNE
 [ ] BPL
-[ ] BRK
+[X] BRK
 [ ] BVC
 [ ] BVS
 [ ] CLC
@@ -33,12 +33,12 @@ Instructions:
 [X] LDX
 [X] LDY
 [ ] LSR
-[ ] NOP
+[X] NOP
 [X] ORA
-[ ] PHA
-[ ] PHP
-[ ] PLA
-[ ] PLP
+[X] PHA
+[X] PHP
+[X] PLA
+[X] PLP
 [ ] ROL
 [ ] ROR
 [ ] RTI
