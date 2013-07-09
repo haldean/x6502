@@ -13,10 +13,10 @@ Instructions:
 [X] BRK
 [X] BVC
 [X] BVS
-[ ] CLC
-[ ] CLD
-[ ] CLI
-[ ] CLV
+[X] CLC
+[X] CLD
+[X] CLI
+[X] CLV
 [X] CMP
 [X] CPX
 [X] CPY
@@ -44,9 +44,9 @@ Instructions:
 [ ] RTI
 [X] RTS
 [X] SBC
-[ ] SEC
-[ ] SED
-[ ] SEI
+[X] SEC
+[X] SED
+[X] SEI
 [X] STA
 [X] STX
 [X] STY

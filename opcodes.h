@@ -68,6 +68,11 @@
 #define BVC_REL 0x50
 #define BVS_REL 0x70
 
+#define CLC     0x18
+#define CLD     0xD8
+#define CLI     0x58
+#define CLV     0xB8
+
 #define CMP_AB  0xCD
 #define CMP_ABX 0xDD
 #define CMP_ABY 0xD9
@@ -180,6 +185,10 @@
 #define SBC_ABY 0xF9
 #define SBC_INX 0xE1
 #define SBC_INY 0xF1
+
+#define SEC     0x38
+#define SED     0xF8
+#define SEI     0x78
 
 #define STA_AB  0x8D
 #define STA_ABX 0x9D
