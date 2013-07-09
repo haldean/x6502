@@ -41,7 +41,7 @@ Instructions:
 [X] PLP
 [X] ROL
 [X] ROR
-[ ] RTI
+[X] RTI
 [X] RTS
 [X] SBC
 [X] SEC
