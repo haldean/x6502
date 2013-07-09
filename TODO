@@ -27,8 +27,8 @@ Instructions:
 [X] INC
 [X] INX
 [X] INY
-[ ] JMP
-[ ] JSR
+[X] JMP
+[X] JSR
 [X] LDA
 [X] LDX
 [X] LDY
@@ -42,7 +42,7 @@ Instructions:
 [X] ROL
 [X] ROR
 [ ] RTI
-[ ] RTS
+[X] RTS
 [X] SBC
 [ ] SEC
 [ ] SED

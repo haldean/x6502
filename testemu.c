@@ -3,15 +3,13 @@
 #include "opcodes.h"
 
 uint8_t prog[] = {
-    LDA_IMM,
-    0xAA,
-    STA_ZP,
-    0x0F,
-    ROR_ZP,
-    0x0F,
-    ROR_ZPX,
-    0x0F,
+    JSR_AB,
+    0x04,
+    0x00,
     BRK,
+    LDA_IMM,
+    0xFF,
+    RTS,
 };
 
 int main(int argc, char *argv[]) {

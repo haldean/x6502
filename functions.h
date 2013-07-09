@@ -3,6 +3,10 @@
 
 #include "cpu.h"
 
+#define ZP(x) ((uint8_t) (x))
+#define STACK_PUSH(m) (m)->mem[(m)->sp-- + STACK_START]
+#define STACK_POP(m) (m)->mem[++(m)->sp + STACK_START]
+
 static inline size_t mem_abs(uint8_t low, uint8_t high, uint8_t off) {
     return (uint16_t) off + (uint16_t) low + ((uint16_t) high << 8);
 }

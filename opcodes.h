@@ -11,8 +11,11 @@
 //      ABX: absolute,X, next two bytes are added to the value in register X to
 //           get the memory address
 //      ABY: same as ABX, except the value of register Y is used instead of X
-//      ACC: act on the value in the accumulator
-//      IMM: next byte is a constant to be used instead of a lookup
+//      ACC: accumulator, act on the value in the accumulator
+//      IMM: immediate, next byte is a constant to be used instead of a lookup
+//      IN:  indirect, next two bytes are an absolute memory address of the
+//           lower nibble of a memory address. That byte and the byte after will
+//           be loaded and the address made of those two bytes will be used
 //      INX: (indirect,X) mode, add X to the following byte, modulo 0xFF, and
 //           lookup two bytes starting at that location. Those two bytes form
 //           the memory address that will be used
@@ -95,6 +98,11 @@
 #define INX     0xE8
 #define INY     0xC8
 
+#define JMP_AB  0x4C
+#define JMP_IN  0x6C
+
+#define JSR_AB  0x20
+
 #define LDA_AB  0xAD
 #define LDA_ABX 0xBD
 #define LDA_ABY 0xB9
@@ -149,6 +157,8 @@
 #define ROR_ACC 0x6A
 #define ROR_ZP  0x66
 #define ROR_ZPX 0x76
+
+#define RTS     0x60
 
 #define SBC_IMM 0xE9
 #define SBC_ZP  0xE5
