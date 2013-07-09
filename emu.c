@@ -21,6 +21,11 @@ void main_loop(cpu *m) {
             case NOP:
                 break;
 
+            #ifdef DEBUG
+            case EXT:
+                goto end;
+            #endif
+
             #include "arithmetic.h"
             #include "branch.h"
             #include "compare.h"
@@ -43,6 +48,13 @@ void main_loop(cpu *m) {
         if (cycles_until_interrupt <= 0) {
             // interruption!
             cycles_until_interrupt = INTERRUPT_PERIOD;
+
+            STACK_PUSH(m) = (m->pc & 0xFF00) >> 8;
+            STACK_PUSH(m) = m->pc & 0xFF;
+            STACK_PUSH(m) = m->sr;
+
+            m->pc = mem_abs(m->mem[0xFFFE], m->mem[0xFFFF], 0);
+            m->sr |= FLAG_INTERRUPT;
         }
 
 #ifdef DEBUG

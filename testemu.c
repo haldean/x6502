@@ -3,11 +3,12 @@
 #include "opcodes.h"
 
 uint8_t prog[] = {
-    SEC,
-    CLC,
     SED,
-    CLD,
-    BRK,
+    LDA_IMM,
+    0x10,
+    ADC_IMM,
+    0x10,
+    EXT,
 };
 
 int main(int argc, char *argv[]) {

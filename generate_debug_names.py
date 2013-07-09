@@ -18,7 +18,7 @@ print '''
 
 #include <stdint.h>
 
-char *inst_names[0xFF];
+char *inst_names[0x100];
 
 void init_names() {
     for (int i = 0; i < 0xFF; i++) {
