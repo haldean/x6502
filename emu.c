@@ -10,6 +10,7 @@ void main_loop(cpu *m) {
 
     uint8_t opcode;
     uint8_t arg1, arg2, t1;
+    int8_t s1;
     uint16_t r1, r2;
 
     for (;;) {
@@ -34,6 +35,7 @@ void main_loop(cpu *m) {
             #include "incdec.h"
             #include "shift.h"
             #include "jump.h"
+            #include "branch.h"
 
             default:
                 printf("ERROR: got unknown opcode %02x\n", opcode);

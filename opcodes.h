@@ -22,6 +22,7 @@
 //      INY: (indirect),Y mode, look up two bytes starting at address in the
 //           following byte, add Y modulo 0xFFFF, and use the result as an
 //           address
+//      REL: relative, next byte contains a signed offset from the current PC.
 //      ZP:  zero-page, next byte is the low bits of the memory address (can
 //           only address first 256 bytes of memory using ZP)
 //      ZPX: zero-page,X, add next byte to X modulo 0xFF and use that as a
@@ -51,10 +52,21 @@
 #define ASL_ZP  0x06
 #define ASL_ZPX 0x16
 
+#define BCC_REL 0x90
+#define BCS_REL 0xB0
+#define BEQ_REL 0xF0
+
 #define BIT_AB  0x2C
 #define BIT_ZP  0x24
 
+#define BMI_REL 0x30
+#define BNE_REL 0xD0
+#define BPL_REL 0x10
+
 #define BRK     0x00
+
+#define BVC_REL 0x50
+#define BVS_REL 0x70
 
 #define CMP_AB  0xCD
 #define CMP_ABX 0xDD

@@ -3,16 +3,16 @@ Instructions:
 [X] ADC
 [X] AND
 [X] ASL
-[ ] BCC
-[ ] BCS
-[ ] BEQ
+[X] BCC
+[X] BCS
+[X] BEQ
 [X] BIT
-[ ] BMI
-[ ] BNE
-[ ] BPL
+[X] BMI
+[X] BNE
+[X] BPL
 [X] BRK
-[ ] BVC
-[ ] BVS
+[X] BVC
+[X] BVS
 [ ] CLC
 [ ] CLD
 [ ] CLI
