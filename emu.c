@@ -18,24 +18,21 @@ void main_loop(cpu *m) {
 
         opcode = NEXT_BYTE(m);
         switch (opcode) {
-            case BRK:
-                goto end;
-                break;
-
             case NOP:
                 break;
 
+            #include "arithmetic.h"
+            #include "branch.h"
+            #include "compare.h"
+            #include "flags.h"
+            #include "incdec.h"
+            #include "jump.h"
             #include "load.h"
+            #include "logical.h"
+            #include "shift.h"
+            #include "stack.h"
             #include "store.h"
             #include "transfer.h"
-            #include "stack.h"
-            #include "logical.h"
-            #include "arithmetic.h"
-            #include "compare.h"
-            #include "incdec.h"
-            #include "shift.h"
-            #include "jump.h"
-            #include "branch.h"
 
             default:
                 printf("ERROR: got unknown opcode %02x\n", opcode);

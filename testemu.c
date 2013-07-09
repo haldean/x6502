@@ -3,12 +3,10 @@
 #include "opcodes.h"
 
 uint8_t prog[] = {
-    LDA_IMM,
-    0x80,
-    INX,
-    LSR_ACC,
-    BNE_REL,
-    0xFC,
+    SEC,
+    CLC,
+    SED,
+    CLD,
     BRK,
 };
 

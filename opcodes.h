@@ -175,6 +175,7 @@
 #define ROR_ZP  0x66
 #define ROR_ZPX 0x76
 
+#define RTI     0x40
 #define RTS     0x60
 
 #define SBC_IMM 0xE9

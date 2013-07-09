@@ -22,3 +22,17 @@ case RTS:
     arg1 = STACK_POP(m);
     m->pc = mem_abs(arg1, STACK_POP(m), 0) + 1;
     break;
+
+case BRK:
+    m->pc++;
+    STACK_PUSH(m) = (m->pc & 0xFF00) >> 8;
+    STACK_PUSH(m) = m->pc & 0xFF;
+    STACK_PUSH(m) = m->sr | FLAG_BREAK;
+    m->pc = mem_abs(m->mem[0xFFFE], m->mem[0xFFFF], 0);
+    break;
+
+case RTI:
+    m->sr = STACK_POP(m);
+    arg1 = STACK_POP(m);
+    m->pc = mem_abs(arg1, STACK_POP(m), 0);
+    break;
