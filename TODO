@@ -39,8 +39,8 @@ Instructions:
 [X] PHP
 [X] PLA
 [X] PLP
-[ ] ROL
-[ ] ROR
+[X] ROL
+[X] ROR
 [ ] RTI
 [ ] RTS
 [X] SBC

@@ -138,6 +138,18 @@
 #define PLA     0x68
 #define PLP     0x28
 
+#define ROL_AB  0x2E
+#define ROL_ABX 0x3E
+#define ROL_ACC 0x2A
+#define ROL_ZP  0x26
+#define ROL_ZPX 0x36
+
+#define ROR_AB  0x6E
+#define ROR_ABX 0x7E
+#define ROR_ACC 0x6A
+#define ROR_ZP  0x66
+#define ROR_ZPX 0x76
+
 #define SBC_IMM 0xE9
 #define SBC_ZP  0xE5
 #define SBC_ZPX 0xF5
