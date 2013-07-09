@@ -24,11 +24,14 @@ case RTS:
     break;
 
 case BRK:
+    // this can't use the normal interrupt logic because the break flag needs to
+    // be set
     m->pc++;
     STACK_PUSH(m) = (m->pc & 0xFF00) >> 8;
     STACK_PUSH(m) = m->pc & 0xFF;
     STACK_PUSH(m) = m->sr | FLAG_BREAK;
     m->pc = mem_abs(m->mem[0xFFFE], m->mem[0xFFFF], 0);
+    m->sr |= FLAG_INTERRUPT;
     break;
 
 case RTI:

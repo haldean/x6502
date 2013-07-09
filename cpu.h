@@ -29,6 +29,8 @@ typedef struct {
     // status register
     uint8_t sr;
 
+    uint8_t interrupt_waiting;
+
 #ifdef DEBUG
     uint8_t last_opcode;
 #endif

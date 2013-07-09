@@ -6,8 +6,6 @@
 #include "opcodes.h"
 
 void main_loop(cpu *m) {
-    uint32_t cycles_until_interrupt = INTERRUPT_PERIOD;
-
     uint8_t opcode;
     uint8_t arg1, arg2, t1;
     int8_t s1;
@@ -44,15 +42,12 @@ void main_loop(cpu *m) {
                 goto end;
         }
 
-        cycles_until_interrupt -= OPCODE_CYCLES(opcode);
-        if (cycles_until_interrupt <= 0) {
-            // interruption!
-            cycles_until_interrupt = INTERRUPT_PERIOD;
-
+        if (m->interrupt_waiting && get_flag(m, FLAG_INTERRUPT)) {
             STACK_PUSH(m) = (m->pc & 0xFF00) >> 8;
             STACK_PUSH(m) = m->pc & 0xFF;
             STACK_PUSH(m) = m->sr;
 
+            m->interrupt_waiting = 0x00;
             m->pc = mem_abs(m->mem[0xFFFE], m->mem[0xFFFF], 0);
             m->sr |= FLAG_INTERRUPT;
         }
