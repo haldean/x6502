@@ -2,22 +2,20 @@
 #include "emu.h"
 #include "opcodes.h"
 
-uint8_t prog[] = {
-    LDA_IMM,    'A',
-    STA_AB,     0x00, 0xFF,
-    LDA_IMM,    'Z',
-    INC_AB,     0x00, 0xFF,
-    CMP_AB,     0x00, 0xFF,
-    BNE_REL,    -6,
-    LDA_IMM,    '\n',
-    STA_AB,     0x00, 0xFF,
-    EXT,
-};
+#include <stdio.h>
 
 int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        printf("must provide input file\n");
+        return -1;
+    }
+
+    FILE *in_f = fopen(argv[1], "rb");
+    int b, i = 0;
     cpu *m = new_cpu();
-    for (int i = 0; i < sizeof(prog); i++) {
-        m->mem[i] = prog[i];
+    while ((b = fgetc(in_f)) != EOF) {
+        m->mem[i++] = (uint8_t) b;
     }
     main_loop(m);
+    return 0;
 }
