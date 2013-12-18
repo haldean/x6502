@@ -1,5 +1,4 @@
 case PHA:
-    printf("%04x\n", m->sp + STACK_START);
     STACK_PUSH(m) = m->ac;
     break;
 

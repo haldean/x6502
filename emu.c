@@ -13,7 +13,6 @@ void main_loop(cpu *m) {
     uint8_t arg1, arg2, t1;
     int8_t s1;
     uint16_t r1, r2;
-    uint16_t dirty;
 
     // pc_offset is used to read from memory like a stream when processing
     // bytecode without modifying the pc. pc_start is the memory address of the
@@ -22,6 +21,8 @@ void main_loop(cpu *m) {
     // pc_start, we branched so we don't touch the pc.
     uint8_t pc_offset = 0;
     uint16_t pc_start;
+
+    init_io();
 
     for (;;) {
         DUMP(m);
@@ -57,6 +58,12 @@ void main_loop(cpu *m) {
                 goto end;
         }
 
+        if (m->pc == pc_start) {
+            m->pc += pc_offset;
+        }
+
+        handle_io(m);
+
         if (m->interrupt_waiting && get_flag(m, FLAG_INTERRUPT)) {
             STACK_PUSH(m) = (m->pc & 0xFF00) >> 8;
             STACK_PUSH(m) = m->pc & 0xFF;
@@ -67,16 +74,10 @@ void main_loop(cpu *m) {
             m->sr |= FLAG_INTERRUPT;
         }
 
-        handle_io(m);
-
-        if (m->pc == pc_start) {
-            m->pc += pc_offset;
-        }
-
 #ifdef DEBUG
         m->last_opcode = opcode;
 #endif
     }
 end:
-    return;
+    finish_io();
 }

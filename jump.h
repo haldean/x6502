@@ -12,7 +12,9 @@ case JMP_IN:
 case JSR_AB:
     arg1 = NEXT_BYTE(m);
     r1 = mem_abs(arg1, NEXT_BYTE(m), 0);
-    r2 = m->pc - 1;
+    // we push the address of the byte immediately before where we want to
+    // return to because reasons:
+    r2 = m->pc + pc_offset - 1;
     STACK_PUSH(m) = (r2 & 0xFF00) >> 8;
     STACK_PUSH(m) = r2 & 0xFF;
     m->pc = r1;
@@ -24,14 +26,8 @@ case RTS:
     break;
 
 case BRK:
-    // this can't use the normal interrupt logic because the break flag needs to
-    // be set
-    m->pc++;
-    STACK_PUSH(m) = (m->pc & 0xFF00) >> 8;
-    STACK_PUSH(m) = m->pc & 0xFF;
-    STACK_PUSH(m) = m->sr | FLAG_BREAK;
-    m->pc = mem_abs(m->mem[0xFFFE], m->mem[0xFFFF], 0);
-    m->sr |= FLAG_INTERRUPT;
+    set_flag(m, FLAG_BREAK, 1);
+    m->interrupt_waiting = 1;
     break;
 
 case RTI:
