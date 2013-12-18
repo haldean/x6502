@@ -1,61 +1,87 @@
 case STA_AB:
     arg1 = NEXT_BYTE(m);
     arg2 = NEXT_BYTE(m);
-    m->mem[mem_abs(arg1, arg2, 0)] = m->ac;
+    r1 = mem_abs(arg1, arg2, 0);
+    m->mem[r1] = m->ac;
+    mark_dirty(m, r1);
     break;
 
 case STA_ABX:
     arg1 = NEXT_BYTE(m);
     arg2 = NEXT_BYTE(m);
-    m->mem[mem_abs(arg1, arg2, m->x)] = m->ac;
+    r1 = mem_abs(arg1, arg2, m->x);
+    m->mem[r1] = m->ac;
+    mark_dirty(m, r1);
     break;
 
 case STA_ABY:
     arg1 = NEXT_BYTE(m);
     arg2 = NEXT_BYTE(m);
-    m->mem[mem_abs(arg1, arg2, m->y)] = m->ac;
+    r1 = mem_abs(arg1, arg2, m->y);
+    m->mem[r1] = m->ac;
+    mark_dirty(m, r1);
     break;
 
 case STA_INX:
-    m->mem[mem_indexed_indirect(m, NEXT_BYTE(m), m->x)] = m->ac;
+    r1 = mem_indexed_indirect(m, NEXT_BYTE(m), m->x);
+    m->mem[r1] = m->ac;
+    mark_dirty(m, r1);
     break;
 
 case STA_INY:
-    m->mem[mem_indirect_index(m, NEXT_BYTE(m), m->y)] = m->ac;
+    r1 = mem_indirect_index(m, NEXT_BYTE(m), m->y);
+    m->mem[r1] = m->ac;
+    mark_dirty(m, r1);
     break;
 
 case STA_ZP:
-    m->mem[ZP(NEXT_BYTE(m))] = m->ac;
+    r1 = ZP(NEXT_BYTE(m));
+    m->mem[r1] = m->ac;
+    mark_dirty(m, r1);
     break;
 
 case STA_ZPX:
-    m->mem[ZP(NEXT_BYTE(m) + m->x)] = m->ac;
+    r1 = ZP(NEXT_BYTE(m) + m->x);
+    m->mem[r1] = m->ac;
+    mark_dirty(m, r1);
     break;
 
 case STX_ZP:
-    m->mem[ZP(NEXT_BYTE(m))] = m->x;
+    r1 = ZP(NEXT_BYTE(m));
+    m->mem[r1] = m->x;
+    mark_dirty(m, r1);
     break;
 
 case STX_ZPY:
-    m->mem[ZP(NEXT_BYTE(m) + m->y)] = m->x;
+    r1 = ZP(NEXT_BYTE(m) + m->y);
+    m->mem[r1] = m->x;
+    mark_dirty(m, r1);
     break;
 
 case STX_AB:
     arg1 = NEXT_BYTE(m);
     arg2 = NEXT_BYTE(m);
-    m->mem[mem_abs(arg1, arg2, 0)] = m->x;
+    r1 = mem_abs(arg1, arg2, 0);
+    m->mem[r1] = m->x;
+    mark_dirty(m, r1);
     break;
 
 case STY_ZP:
-    m->mem[ZP(NEXT_BYTE(m))] = m->y;
+    r1 = ZP(NEXT_BYTE(m));
+    m->mem[r1] = m->y;
+    mark_dirty(m, r1);
     break;
 
 case STY_ZPX:
-    m->mem[ZP(NEXT_BYTE(m) + m->x)] = m->y;
+    r1 = ZP(NEXT_BYTE(m) + m->x);
+    m->mem[r1] = m->y;
+    mark_dirty(m, r1);
     break;
 
 case STY_AB:
     arg1 = NEXT_BYTE(m);
     arg2 = NEXT_BYTE(m);
-    m->mem[mem_abs(arg1, arg2, 0)] = m->y;
+    r1 = mem_abs(arg1, arg2, 0);
+    m->mem[r1] = m->y;
+    mark_dirty(m, r1);
     break;

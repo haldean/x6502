@@ -32,6 +32,12 @@ static inline uint8_t get_flag(cpu *m, uint8_t flag) {
     return (m->sr & flag) > 0;
 }
 
+static inline uint8_t get_emu_flag(cpu *m, uint8_t flag) {
+    return (m->emu_flags & flag) > 0;
+}
+
+// set flags for the result of a computation. set_flags should be called on the
+// result of any arithmetic operation.
 static inline void set_flags(cpu *m, uint8_t val) {
     set_flag(m, FLAG_ZERO, !val);
     set_flag(m, FLAG_NEGATIVE, val & 0x80);
@@ -80,6 +86,18 @@ static inline void cmp(cpu *m, uint8_t mem, uint8_t reg) {
     set_flag(m, FLAG_CARRY, reg >= mem);
     set_flag(m, FLAG_ZERO, reg == mem);
     set_flag(m, FLAG_NEGATIVE, 0x80 & (reg - mem));
+}
+
+// called at the start of processing an instruction to reset instruction-local
+// emulator state
+static inline void reset_emu_flags(cpu *m) {
+    m->emu_flags = 0x00;
+}
+
+// mark a memory address as dirty
+static inline void mark_dirty(cpu *m, uint16_t addr) {
+    m->emu_flags |= EMU_FLAG_DIRTY;
+    m->dirty_mem_addr = addr;
 }
 
 #endif

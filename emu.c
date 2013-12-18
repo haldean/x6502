@@ -3,26 +3,41 @@
 #include <stdio.h>
 #include "debug.h"
 #include "functions.h"
+#include "io.h"
 #include "opcodes.h"
+
+#define NEXT_BYTE(cpu) ((cpu)->mem[(cpu)->pc + (pc_offset++)])
 
 void main_loop(cpu *m) {
     uint8_t opcode;
     uint8_t arg1, arg2, t1;
     int8_t s1;
     uint16_t r1, r2;
+    uint16_t dirty;
+
+    // pc_offset is used to read from memory like a stream when processing
+    // bytecode without modifying the pc. pc_start is the memory address of the
+    // currently-executing opcode; if pc == pc_start at the end of a simulation
+    // step, we add pc_offset to get the start of the next instruction. if pc !=
+    // pc_start, we branched so we don't touch the pc.
+    uint8_t pc_offset = 0;
+    uint16_t pc_start;
 
     for (;;) {
         DUMP(m);
 
+        reset_emu_flags(m);
+
+        pc_offset = 0;
+        pc_start = m->pc;
         opcode = NEXT_BYTE(m);
+
         switch (opcode) {
             case NOP:
                 break;
 
-            #ifdef DEBUG
             case EXT:
                 goto end;
-            #endif
 
             #include "arithmetic.h"
             #include "branch.h"
@@ -50,6 +65,12 @@ void main_loop(cpu *m) {
             m->interrupt_waiting = 0x00;
             m->pc = mem_abs(m->mem[0xFFFE], m->mem[0xFFFF], 0);
             m->sr |= FLAG_INTERRUPT;
+        }
+
+        handle_io(m);
+
+        if (m->pc == pc_start) {
+            m->pc += pc_offset;
         }
 
 #ifdef DEBUG

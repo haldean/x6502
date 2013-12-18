@@ -4,6 +4,7 @@ case ASL_AB:
     set_flag(m, FLAG_CARRY, m->mem[r1] & 0x80);
     m->mem[r1] = (m->mem[r1] << 1) & 0xFE;
     set_flags(m, m->mem[r1]);
+    mark_dirty(m, r1);
     break;
 
 case ASL_ABX:
@@ -12,6 +13,7 @@ case ASL_ABX:
     set_flag(m, FLAG_CARRY, m->mem[r1] & 0x80);
     m->mem[r1] = (m->mem[r1] << 1) & 0xFE;
     set_flags(m, m->mem[r1]);
+    mark_dirty(m, r1);
     break;
 
 case ASL_ACC:
@@ -25,6 +27,7 @@ case ASL_ZP:
     set_flag(m, FLAG_CARRY, m->mem[arg1] & 0x80);
     m->mem[arg1] = (m->mem[arg1] << 1) & 0xFE;
     set_flags(m, m->mem[arg1]);
+    mark_dirty(m, arg1);
     break;
 
 case ASL_ZPX:
@@ -32,6 +35,7 @@ case ASL_ZPX:
     set_flag(m, FLAG_CARRY, m->mem[arg1] & 0x80);
     m->mem[arg1] = (m->mem[arg1] << 1) & 0xFE;
     set_flags(m, m->mem[arg1]);
+    mark_dirty(m, arg1);
     break;
 
 case LSR_AB:
@@ -40,6 +44,7 @@ case LSR_AB:
     set_flag(m, FLAG_CARRY, m->mem[r1] & 0x01);
     m->mem[r1] = (m->mem[r1] >> 1) & 0x7F;
     set_flags(m, m->mem[r1]);
+    mark_dirty(m, r1);
     break;
 
 case LSR_ABX:
@@ -48,6 +53,7 @@ case LSR_ABX:
     set_flag(m, FLAG_CARRY, m->mem[r1] & 0x01);
     m->mem[r1] = (m->mem[r1] >> 1) & 0x7F;
     set_flags(m, m->mem[r1]);
+    mark_dirty(m, r1);
     break;
 
 case LSR_ACC:
@@ -61,6 +67,7 @@ case LSR_ZP:
     set_flag(m, FLAG_CARRY, m->mem[arg1] & 0x01);
     m->mem[arg1] = (m->mem[arg1] >> 1) & 0x7F;
     set_flags(m, m->mem[arg1]);
+    mark_dirty(m, arg1);
     break;
 
 case LSR_ZPX:
@@ -68,6 +75,7 @@ case LSR_ZPX:
     set_flag(m, FLAG_CARRY, m->mem[arg1] & 0x01);
     m->mem[arg1] = (m->mem[arg1] >> 1) & 0x7F;
     set_flags(m, m->mem[arg1]);
+    mark_dirty(m, arg1);
     break;
 
 case ROL_AB:
@@ -77,6 +85,7 @@ case ROL_AB:
     m->mem[r1] = ((m->mem[r1] << 1) & 0xFE) | get_flag(m, FLAG_CARRY);
     set_flag(m, FLAG_CARRY, t1);
     set_flags(m, m->mem[r1]);
+    mark_dirty(m, r1);
     break;
 
 case ROL_ABX:
@@ -86,6 +95,7 @@ case ROL_ABX:
     m->mem[r1] = ((m->mem[r1] << 1) & 0xFE) | get_flag(m, FLAG_CARRY);
     set_flag(m, FLAG_CARRY, t1);
     set_flags(m, m->mem[r1]);
+    mark_dirty(m, r1);
     break;
 
 case ROL_ACC:
@@ -101,6 +111,7 @@ case ROL_ZP:
     m->mem[arg1] = ((m->mem[arg1] << 1) & 0xFE) | get_flag(m, FLAG_CARRY);
     set_flag(m, FLAG_CARRY, t1);
     set_flags(m, m->mem[arg1]);
+    mark_dirty(m, arg1);
     break;
 
 case ROL_ZPX:
@@ -109,6 +120,7 @@ case ROL_ZPX:
     m->mem[arg1] = ((m->mem[arg1] << 1) & 0xFE) | get_flag(m, FLAG_CARRY);
     set_flag(m, FLAG_CARRY, t1);
     set_flags(m, m->mem[arg1]);
+    mark_dirty(m, arg1);
     break;
 
 case ROR_AB:
@@ -118,6 +130,7 @@ case ROR_AB:
     m->mem[r1] = ((m->mem[r1] >> 1) & 0x7F) | (get_flag(m, FLAG_CARRY) << 7);
     set_flag(m, FLAG_CARRY, t1);
     set_flags(m, m->mem[r1]);
+    mark_dirty(m, r1);
     break;
 
 case ROR_ABX:
@@ -127,6 +140,7 @@ case ROR_ABX:
     m->mem[r1] = ((m->mem[r1] >> 1) & 0x7F) | (get_flag(m, FLAG_CARRY) << 7);
     set_flag(m, FLAG_CARRY, t1);
     set_flags(m, m->mem[r1]);
+    mark_dirty(m, r1);
     break;
 
 case ROR_ACC:
@@ -142,6 +156,7 @@ case ROR_ZP:
     m->mem[arg1] = ((m->mem[arg1] >> 1) & 0x7F) | (get_flag(m, FLAG_CARRY) << 7);
     set_flag(m, FLAG_CARRY, t1);
     set_flags(m, m->mem[arg1]);
+    mark_dirty(m, arg1);
     break;
 
 case ROR_ZPX:
@@ -150,4 +165,5 @@ case ROR_ZPX:
     m->mem[arg1] = ((m->mem[arg1] >> 1) & 0x7F) | (get_flag(m, FLAG_CARRY) << 7);
     set_flag(m, FLAG_CARRY, t1);
     set_flags(m, m->mem[arg1]);
+    mark_dirty(m, arg1);
     break;

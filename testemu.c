@@ -3,11 +3,14 @@
 #include "opcodes.h"
 
 uint8_t prog[] = {
-    SED,
-    LDA_IMM,
-    0x10,
-    ADC_IMM,
-    0x10,
+    LDA_IMM,    'A',
+    STA_AB,     0x00, 0xFF,
+    LDA_IMM,    'Z',
+    INC_AB,     0x00, 0xFF,
+    CMP_AB,     0x00, 0xFF,
+    BNE_REL,    -6,
+    LDA_IMM,    '\n',
+    STA_AB,     0x00, 0xFF,
     EXT,
 };
 

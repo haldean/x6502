@@ -15,7 +15,7 @@
 #define FLAG_ZERO 0x02
 #define FLAG_CARRY 0x01
 
-#define NEXT_BYTE(cpu) ((cpu)->mem[(cpu)->pc++])
+#define EMU_FLAG_DIRTY 0x01
 
 typedef struct {
     // program counter
@@ -28,6 +28,8 @@ typedef struct {
     uint8_t ac;
     // status register
     uint8_t sr;
+    // emulator flag register (not in 6502 spec, not accessible from assembler)
+    uint8_t emu_flags;
 
     uint8_t interrupt_waiting;
 
@@ -37,6 +39,9 @@ typedef struct {
 
     // RAM
     uint8_t mem[MEMORY_SIZE];
+
+    // stores the address of memory modified by the last instruction
+    uint16_t dirty_mem_addr;
 } cpu;
 
 cpu * new_cpu();

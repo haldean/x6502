@@ -5,6 +5,10 @@
 #define MEM_PRINT_BYTES 16
 
 void dump_cpu(cpu *m) {
+    /* even though this method is never called if the debug switch is off,
+     * we want to be able to access members in here that don't exist when DEBUG
+     * is off, so we have to no-op the method in the debug-undefined case. */
+#ifdef DEBUG
     init_names();
 
     int i;
@@ -51,4 +55,5 @@ void dump_cpu(cpu *m) {
     }
 
     printf("\n\n");
+#endif
 }
