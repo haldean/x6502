@@ -22,14 +22,19 @@ void main_loop(cpu *m) {
     uint8_t pc_offset = 0;
     uint16_t pc_start;
 
+    // branch_offset is an offset that will be added to the program counter
+    // after we move to the next instruction
+    int8_t branch_offset = 0;
+
     init_io();
 
     for (;;) {
-        DUMP(m);
+        DUMP_DEBUG(m);
 
         reset_emu_flags(m);
 
         pc_offset = 0;
+        branch_offset = 0;
         pc_start = m->pc;
         opcode = NEXT_BYTE(m);
 
@@ -37,8 +42,14 @@ void main_loop(cpu *m) {
             case NOP:
                 break;
 
+#ifndef DISABLE_EXTENSIONS
             case EXT:
                 goto end;
+
+            case DUMP:
+                dump_cpu(m);
+                break;
+#endif
 
             #include "arithmetic.h"
             #include "branch.h"
@@ -61,10 +72,11 @@ void main_loop(cpu *m) {
         if (m->pc == pc_start) {
             m->pc += pc_offset;
         }
+        m->pc += branch_offset;
 
         handle_io(m);
 
-        if (m->interrupt_waiting && get_flag(m, FLAG_INTERRUPT)) {
+        if (m->interrupt_waiting && !get_flag(m, FLAG_INTERRUPT)) {
             STACK_PUSH(m) = (m->pc & 0xFF00) >> 8;
             STACK_PUSH(m) = m->pc & 0xFF;
             STACK_PUSH(m) = m->sr;
@@ -74,9 +86,7 @@ void main_loop(cpu *m) {
             m->sr |= FLAG_INTERRUPT;
         }
 
-#ifdef DEBUG
         m->last_opcode = opcode;
-#endif
     }
 end:
     finish_io();

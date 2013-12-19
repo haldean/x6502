@@ -30,18 +30,14 @@ typedef struct {
     uint8_t sr;
     // emulator flag register (not in 6502 spec, not accessible from assembler)
     uint8_t emu_flags;
-
+    // set to nonzero if there is an outstanding interrupt
     uint8_t interrupt_waiting;
-
-#ifdef DEBUG
-    uint8_t last_opcode;
-#endif
-
     // RAM
     uint8_t mem[MEMORY_SIZE];
-
     // stores the address of memory modified by the last instruction
     uint16_t dirty_mem_addr;
+    // the opcode of the last instruction run. for debugging only.
+    uint8_t last_opcode;
 } cpu;
 
 cpu * new_cpu();

@@ -4,9 +4,9 @@
 #include "cpu.h"
 
 #ifdef DEBUG
-#define DUMP(cpu) (dump_cpu(cpu))
+#define DUMP_DEBUG(cpu) (dump_cpu(cpu))
 #else
-#define DUMP(cpu)
+#define DUMP_DEBUG(cpu)
 #endif
 
 void dump_cpu(cpu *m);

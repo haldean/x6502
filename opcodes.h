@@ -28,6 +28,8 @@
 //      ZPX: zero-page,X, add next byte to X modulo 0xFF and use that as a
 //           memory address
 
+// custom instruction set extensions
+#define DUMP    0xFC
 #define EXT     0xFF
 
 #define ADC_AB  0x6D

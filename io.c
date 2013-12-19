@@ -55,7 +55,6 @@ void finish_io() {
 
 void handle_io(cpu *m) {
     if (next_read != next_write) {
-        printf("\nsending interrupt for char %c\n", input_buffer[next_read]);
         m->interrupt_waiting = 0x01;
         m->mem[IO_GETCHAR] = input_buffer[next_read++];
         if (next_read >= INPUT_BUFFER_SIZE) {
@@ -67,6 +66,7 @@ void handle_io(cpu *m) {
         if (m->dirty_mem_addr == IO_PUTCHAR) {
             uint8_t val = m->mem[m->dirty_mem_addr];
             putchar(val);
+            fflush(stdout);
         }
     }
 }

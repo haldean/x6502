@@ -3,12 +3,9 @@
 #include <stdio.h>
 
 #define MEM_PRINT_BYTES 16
+#define MAX_MEM_OFFSET (MEMORY_SIZE - MEM_PRINT_BYTES)
 
 void dump_cpu(cpu *m) {
-    /* even though this method is never called if the debug switch is off,
-     * we want to be able to access members in here that don't exist when DEBUG
-     * is off, so we have to no-op the method in the debug-undefined case. */
-#ifdef DEBUG
     init_names();
 
     int i;
@@ -30,16 +27,21 @@ void dump_cpu(cpu *m) {
             (m->sr & FLAG_CARRY) > 0);
 
     printf("\nmem   ");
+
+    int mem_offset = m->pc - MEM_PRINT_BYTES / 2;
+    // clamp to [0, MAX_MEM_OFFSET]
+    mem_offset = mem_offset < 0 ? 0 : (
+            mem_offset > MAX_MEM_OFFSET ? MAX_MEM_OFFSET : mem_offset);
+
     for (i = 0; i < MEM_PRINT_BYTES; i++) {
-        printf("%02X ", m->mem[i]);
+        printf("%02X ", m->mem[i + mem_offset]);
     }
-    if (m->pc < MEM_PRINT_BYTES) {
-        printf("\n      ");
-        for (i = 0; i < m->pc; i++) {
-            printf("   ");
-        }
-        printf("^^");
+
+    printf("\n      ");
+    for (i = 0; i < m->pc - mem_offset; i++) {
+        printf("   ");
     }
+    printf("^^ (%04x)", m->pc);
 
     printf("\nstack ");
     for (i = 0; i < MEM_PRINT_BYTES; i++) {
@@ -55,5 +57,4 @@ void dump_cpu(cpu *m) {
     }
 
     printf("\n\n");
-#endif
 }
