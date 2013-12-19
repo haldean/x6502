@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>x6502 by haldean</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>x6502</h1>
+        <p>Yet another 6502 emulator that one day dreams of being an Atari 2600.</p>
+
+        <p class="view"><a href="https://github.com/haldean/x6502">View the Project on GitHub <small>haldean/x6502</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/haldean/x6502/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/haldean/x6502/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/haldean/x6502">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="x6502-a-simple-6502-cpu-emulator" class="anchor" href="#x6502-a-simple-6502-cpu-emulator"><span class="octicon octicon-link"></span></a>x6502: a simple 6502 CPU emulator</h1>
+
+<p>x6502 is an emulator for the 6502 class of processors.
+    It currently supports the full instruction set of the
+    6502 (plus a few extensions) and has an extremely
+    rudimentary simulated I/O bus. It should be able to run
+    arbitrary x6502 bytecode with "correct" results,
+    although most binaries for common 6502 systems (Amiga,
+    C64, Apple II, etc) won't function as expected, since
+    they expect I/O devices to be mapped into memory where
+    there are currently none.</p>
+
+<h2>
+<a name="building-and-running-x6502" class="anchor" href="#building-and-running-x6502"><span class="octicon octicon-link"></span></a>Building and running x6502</h2>
+
+<p>To build x6502, just run <code>make</code> in the project root. You
+    will need clang and Python installed. To use gcc, change
+    the <code>CC</code> var in the Makefile. No libraries beyond POSIX
+    libc are used. This will produce the x6502 binary.</p>
+
+<p>x6502 takes the compiled 6502 object file as an
+    argument, and runs it until it encounters an EXT
+    instruction (EXT instructions are an extension to 6502
+    bytecode, see below). You can use any 6502 assembler to
+    compile to 6502 bytecode; <code>xa</code> is one that is bundled
+    with Debian-based distros. Note that, by default, x6502
+    loads code in at address <code>0x00</code>; you therefore need to
+    either tell your assembler that that's the base address
+    for the text section of your binary or override the
+    default load address using the <code>-b</code> flag of x6502.</p>
+
+<p>If you want to compile a version of x6502 that dumps
+    machine state after every instruction, run <code>make debug</code>
+    instead of <code>make</code>. This will also disable compiler
+    optimizations.</p>
+
+<h2>
+<a name="extensions-to-the-6502-instruction-set" class="anchor" href="#extensions-to-the-6502-instruction-set"><span class="octicon octicon-link"></span></a>Extensions to the 6502 instruction set</h2>
+
+<p>x6502 recognizes two instructions that are not in the
+    original 6502 instruction set. These are:</p>
+
+<ul>
+<li>
+<code>DEBUG (0xFC)</code> prints debugging information about the current state of the emulator</li>
+<li>
+<code>EXT (0xFF)</code> stops the emulator and exits</li>
+</ul><p>Both of these are defined as macros in <code>stdlib/stdio.s</code>.
+    To disable these extensions, compile with
+    <code>-DDISABLE_EXTENSIONS</code> (right now, this can be done by
+    adding that flag to the Makefile).</p>
+
+<h2>
+<a name="io-memory-map" class="anchor" href="#io-memory-map"><span class="octicon octicon-link"></span></a>I/O memory map:</h2>
+
+<p>There are only two I/O devices right now: a character
+    input device and a character output device. Convenience
+    constants and macros for all I/O devices are defined in
+    <code>stdlib/stdio.s</code> for use in user programs. Add <code>stdlib/</code> to
+    your include path and then add <code>#include &lt;stdio.s&gt;</code> to
+    your program to use these constants.</p>
+
+<p>The character output device is mapped to <code>FF00</code>. Any
+    character written to <code>FF00</code> is immediately echoed to the
+    terminal.</p>
+
+<p>The character input device is mapped to <code>FF01</code>. When a
+    character is available on standard in, an interrupt is
+    raised and <code>FF01</code> is set to the character that was
+    received. Note that one character is delivered per
+    interrupt; if the user types <code>abc</code>, they will get
+    three interrupts, one after the other.</p>
+
+<p>A commented example of how to use the I/O capabilities
+    of x6502 is provided in <code>test-programs/echo.s</code>.</p>
+
+<h2>
+<a name="source-code-formatting" class="anchor" href="#source-code-formatting"><span class="octicon octicon-link"></span></a>Source code formatting</h2>
+
+<p>The code for opcode handling is a little strange; there
+    are lots of "header" files in the opcode_handlers
+    directory that are not really header files at all. These
+    files all contain code for handling opcode parsing and
+    interpretation; with over 150 opcodes, having all of the
+    code to handle these in one file would be excessive and
+    difficult to navigate, and dispatching out to functions
+    to handle each opcode carries unnecessary overhead in
+    what should be the tightest loop in the project. Thus,
+    each of these header files is <code>#include</code>d in <code>emu.c</code> in the
+    middle of a switch statement, and gets access to the
+    local scope within the <code>main_loop</code> function. It's weird
+    but it gets the job done, and is the least bad of all
+    considered options.</p>
+
+<h2>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO:</h2>
+
+<ul>
+<li>support buffered input, where the program can read
+more than one input character at once.</li>
+<li>graphics? definitely more I/O.</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/haldean">haldean</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
