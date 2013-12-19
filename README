@@ -93,7 +93,6 @@ Source code formatting
     considered options.
 
 TODO:
-    - switch to Makefiles like a real person
     - support buffered input, where the program can read
       more than one input character at once.
     - graphics? definitely more I/O.
