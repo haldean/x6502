@@ -4,7 +4,6 @@
 #include <stdint.h>
 
 #define MEMORY_SIZE 65536
-#define INTERRUPT_PERIOD 100
 #define STACK_START 0x0100
 
 #define FLAG_NEGATIVE 0x80

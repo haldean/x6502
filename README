@@ -75,24 +75,65 @@ I/O memory map:
     A commented example of how to use the I/O capabilities
     of x6502 is provided in sample_programs/echo.s.
 
-Source code formatting
+Reading the source
 
-    The code for opcode handling is a little strange; there
-    are lots of ``header'' files in the opcode_handlers
-    directory that are not really header files at all. These
-    files all contain code for handling opcode parsing and
-    interpretation; with over 150 opcodes, having all of the
-    code to handle these in one file would be excessive and
-    difficult to navigate, and dispatching out to functions
-    to handle each opcode carries unnecessary overhead in
-    what should be the tightest loop in the project. Thus,
-    each of these header files is #included in emu.c in the
-    middle of a switch statement, and gets access to the
-    local scope within the main_loop function. It's weird
-    but it gets the job done, and is the least bad of all
-    considered options.
+    x6502 was written to be easy to understand and read. A
+    good place to start is `cpu.h', which defines a few
+    constants used throughout the code (mostly around CPU
+    flags) as well as the `cpu' struct, which is used pretty
+    much everywhere.
+    
+    `emu.c' is where the interesting stuff happens; this is
+    the main loop of the emulator where opcodes are decoded
+    as dispatched. It also handles interrupts and calls out
+    to I/O handlers.
+
+    The code for actual opcode interpretation is a little
+    strange; there are lots of ``header'' files in the
+    opcode_handlers directory that are not really header
+    files at all. These files all contain code for handling
+    opcode parsing and interpretation; with over 150
+    opcodes, having all of the code to handle these in one
+    file would be excessive and difficult to navigate, and
+    dispatching out to functions to handle each opcode
+    carries unnecessary overhead in what should be the
+    tightest loop in the project. Thus, each of these header
+    files is #included in emu.c in the middle of a switch
+    statement, and gets access to the local scope within the
+    main_loop function. It's weird but it gets the job done,
+    and is the least bad of all considered options.
+
+    The opcode handlers all use convenience functions
+    defined in `functions.h', most of which are for the
+    various addressing modes of the 6502 or for dealing with
+    CPU flags.
+
+    `io.c' is where the I/O bus lives; this is where we
+    check to see if the emulated character device has been
+    written to and where we raise an interrupt if we've
+    gotten input from stdin.
+
+    `generate_debug_names.py' reads the `opcodes.h' header
+    and generates `debug-names.h', which contains a mapping
+    from opcode to a string representation of that opcode.
+    It's only used when dumping CPU state, either because
+    the DEBUG flag was set at compile time or because a
+    DEBUG instruction was hit in the binary.
+
+    The rest of the files are pretty boring; `main.c' is
+    pretty much only responsible for loading bytecode into
+    memory and parsing command line arguments and `debug.c' is
+    used to provide the `dump_cpu' function, which is a
+    fascinating function consisting of almost nothing but
+    printfs.
 
 TODO:
     - support buffered input, where the program can read
       more than one input character at once.
     - graphics? definitely more I/O.
+
+THANKS:
+    - voltagex on Github for sending me a patch to improve
+      the sample_programs readme.
+    - anatoly on HN for suggesting I add a bit on source
+      code structure to the README.
