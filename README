@@ -50,7 +50,7 @@ Extensions to the 6502 instruction set
     Both of these are defined as macros in `stdlib/stdio.s'.
     To disable these extensions, compile with
     -DDISABLE_EXTENSIONS (right now, this can be done by
-    adding that flag to the make.sh script).
+    adding that flag to the Makefile).
 
 I/O memory map:
 
@@ -73,7 +73,7 @@ I/O memory map:
     three interrupts one after the other.
 
     A commented example of how to use the I/O capabilities
-    of x6502 is provided in test-programs/echo.s.
+    of x6502 is provided in sample_programs/echo.s.
 
 Source code formatting
 
@@ -87,7 +87,7 @@ Source code formatting
     to handle each opcode carries unnecessary overhead in
     what should be the tightest loop in the project. Thus,
     each of these header files is #included in emu.c in the
-    middle of a select statement, and gets access to the
+    middle of a switch statement, and gets access to the
     local scope within the main_loop function. It's weird
     but it gets the job done, and is the least bad of all
     considered options.
