@@ -51,18 +51,18 @@ void main_loop(cpu *m) {
                 break;
 #endif
 
-            #include "arithmetic.h"
-            #include "branch.h"
-            #include "compare.h"
-            #include "flags.h"
-            #include "incdec.h"
-            #include "jump.h"
-            #include "load.h"
-            #include "logical.h"
-            #include "shift.h"
-            #include "stack.h"
-            #include "store.h"
-            #include "transfer.h"
+            #include "opcode_handlers/arithmetic.h"
+            #include "opcode_handlers/branch.h"
+            #include "opcode_handlers/compare.h"
+            #include "opcode_handlers/flags.h"
+            #include "opcode_handlers/incdec.h"
+            #include "opcode_handlers/jump.h"
+            #include "opcode_handlers/load.h"
+            #include "opcode_handlers/logical.h"
+            #include "opcode_handlers/shift.h"
+            #include "opcode_handlers/stack.h"
+            #include "opcode_handlers/store.h"
+            #include "opcode_handlers/transfer.h"
 
             default:
                 printf("ERROR: got unknown opcode %02x\n", opcode);

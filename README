@@ -9,7 +9,7 @@
     It currently supports the full instruction set of the
     6502 (plus a few extensions) and has an extremely
     rudimentary simulated I/O bus. It should be able to run
-    arbitrary x6502 bytecode with "correct" results,
+    arbitrary x6502 bytecode with ``correct'' results,
     although most binaries for common 6502 systems (Amiga,
     C64, Apple II, etc) won't function as expected, since
     they expect I/O devices to be mapped into memory where
@@ -17,9 +17,10 @@
 
 Building and running x6502
 
-    To build x6502, just run ./make.sh. You will need clang
-    and Python installed. No libraries beyond POSIX libc are
-    used. This will produce the x6502 binary.
+    To build x6502, just run `make' in the project root. You
+    will need clang and Python installed. To use gcc, change
+    the $(CC) var in the Makefile. No libraries beyond POSIX
+    libc are used. This will produce the x6502 binary.
 
     x6502 takes the compiled 6502 object file as an
     argument, and runs it until it encounters an EXT
@@ -31,6 +32,11 @@ Building and running x6502
     either tell your assembler that that's the base address
     for the text section of your binary or override the
     default load address using the `-b' flag of x6502.
+
+    If you want to compile a version of x6502 that dumps
+    machine state after every instruction, run `make debug'
+    instead of `make'. This will also disable compiler
+    optimizations.
 
 Extensions to the 6502 instruction set
 
@@ -59,11 +65,28 @@ I/O memory map:
     character is available on standard in, an interrupt is
     raised and FF01 is set to the character that was
     received. Note that one character is delivered per
-    interrupt; if the user types "abc", they will get three
-    interrupts one after the other.
+    interrupt; if the user types ``abc'', they will get
+    three interrupts one after the other.
 
     A commented example of how to use the I/O capabilities
     of x6502 is provided in test-programs/echo.s.
+
+Source code formatting
+
+    The code for opcode handling is a little strange; there
+    are lots of ``header'' files in the opcode_handlers
+    directory that are not really header files at all. These
+    files all contain code for handling opcode parsing and
+    interpretation; with over 150 opcodes, having all of the
+    code to handle these in one file would be excessive and
+    difficult to navigate, and dispatching out to functions
+    to handle each opcode carries unnecessary overhead in
+    what should be the tightest loop in the project. Thus,
+    each of these header files is #included in emu.c in the
+    middle of a select statement, and gets access to the
+    local scope within the main_loop function. It's weird
+    but it gets the job done, and is the least bad of all
+    considered options.
 
 TODO:
     - switch to Makefiles like a real person
