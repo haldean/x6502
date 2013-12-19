@@ -10,7 +10,7 @@
     6502 (plus a few extensions) and has an extremely
     rudimentary simulated I/O bus. It should be able to run
     arbitrary x6502 bytecode with ``correct'' results,
-    although most binaries for common 6502 systems (Amiga,
+    although most binaries for common 6502 systems (Atari,
     C64, Apple II, etc) won't function as expected, since
     they expect I/O devices to be mapped into memory where
     there are currently none.
