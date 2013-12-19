@@ -47,7 +47,7 @@ Extensions to the 6502 instruction set
                       current state of the emulator
         EXT (0xFF):   stops the emulator and exits
 
-    Both of these are defined as macros in stdlib/stdio.s.
+    Both of these are defined as macros in `stdlib/stdio.s'.
     To disable these extensions, compile with
     -DDISABLE_EXTENSIONS (right now, this can be done by
     adding that flag to the make.sh script).
@@ -55,7 +55,11 @@ Extensions to the 6502 instruction set
 I/O memory map:
 
     There are only two I/O devices right now: a character
-    input device and a character output device.
+    input device and a character output device. Convenience
+    constants and macros for all I/O devices are defined in
+    `stdlib/stdio.s' for use in user programs. Add stdlib to
+    your include path and then add `#include <stdio.s>' to
+    your program to use these constants.
     
     The character output device is mapped to FF00. Any
     character written to FF00 is immediately echoed to the
