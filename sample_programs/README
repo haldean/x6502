@@ -1,3 +1,0 @@
-Test 6502 assembler programs. Generate binaries with:
-
-xa -bt0 -Istdlib/ sample_programs/test.s
