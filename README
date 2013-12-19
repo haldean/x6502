@@ -1,0 +1,74 @@
++-------------------------------------------------------------+
+|                                                             |
+|                           x6502                             |
+|                 a simple 6502 CPU emulator                  |
+|                                                             |
++-------------------------------------------------------------+
+
+    x6502 is an emulator for the 6502 class of processors.
+    It currently supports the full instruction set of the
+    6502 (plus a few extensions) and has an extremely
+    rudimentary simulated I/O bus. It should be able to run
+    arbitrary x6502 bytecode with "correct" results,
+    although most binaries for common 6502 systems (Amiga,
+    C64, Apple II, etc) won't function as expected, since
+    they expect I/O devices to be mapped into memory where
+    there are currently none.
+
+Building and running x6502
+
+    To build x6502, just run ./make.sh. You will need clang
+    and Python installed. No libraries beyond POSIX libc are
+    used. This will produce the x6502 binary.
+
+    x6502 takes the compiled 6502 object file as an
+    argument, and runs it until it encounters an EXT
+    instruction (EXT instructions are an extension to 6502
+    bytecode, see below). You can use any 6502 assembler to
+    compile to 6502 bytecode; `xa' is one that is bundled
+    with Debian-based distros. Note that x6502 loads code in
+    at address 0x00; you therefore need to tell your
+    assembler that that's the base address for the text
+    section of your binary. If using `xa', the appropriate
+    build command is:
+
+        xa -bt0 path/to/my/program.s
+
+Extensions to the 6502 instruction set
+
+    x6502 recognizes two instructions that are not in the
+    original 6502 instruction set. These are:
+
+        DEBUG (0xFC): prints debugging information about the
+                      current state of the emulator
+        EXT (0xFF):   stops the emulator and exits
+
+    Both of these are defined as macros in stdlib/stdio.s.
+    To disable these extensions, compile with
+    -DDISABLE_EXTENSIONS (right now, this can be done by
+    adding that flag to the make.sh script).
+
+I/O memory map:
+
+    There are only two I/O devices right now: a character
+    input device and a character output device.
+    
+    The character output device is mapped to FF00. Any
+    character written to FF00 is immediately echoed to the
+    terminal.
+
+    The character input device is mapped to FF01. When a
+    character is available on standard in, an interrupt is
+    raised and FF01 is set to the character that was
+    received. Note that one character is delivered per
+    interrupt; if the user types "abc", they will get three
+    interrupts one after the other.
+
+    A commented example of how to use the I/O capabilities
+    of x6502 is provided in test-programs/echo.s.
+
+TODO:
+    - support configurable base addresses
+    - switch to Makefiles like a real person
+    - support buffered input, where the program can read
+      more than one input character at once.

@@ -5,3 +5,5 @@ getc = $FF01
 
 #define debug .byt $FC
 #define ext .byt $FF
+#define DEBUG debug
+#define EXT ext
