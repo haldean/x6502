@@ -19,8 +19,14 @@ print '''
 #include <stdint.h>
 
 char *inst_names[0x100];
+char names_initialized = 0;
 
 void init_names() {
+    if (names_initialized) {
+        return;
+    }
+    names_initialized = 1;
+
     for (int i = 0; i < 0xFF; i++) {
         inst_names[i] = "unknown";
     }
