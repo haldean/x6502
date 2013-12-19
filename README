@@ -26,13 +26,11 @@ Building and running x6502
     instruction (EXT instructions are an extension to 6502
     bytecode, see below). You can use any 6502 assembler to
     compile to 6502 bytecode; `xa' is one that is bundled
-    with Debian-based distros. Note that x6502 loads code in
-    at address 0x00; you therefore need to tell your
-    assembler that that's the base address for the text
-    section of your binary. If using `xa', the appropriate
-    build command is:
-
-        xa -bt0 path/to/my/program.s
+    with Debian-based distros. Note that, by default, x6502
+    loads code in at address 0x00; you therefore need to
+    either tell your assembler that that's the base address
+    for the text section of your binary or override the
+    default load address using the `-b' flag of x6502.
 
 Extensions to the 6502 instruction set
 
@@ -68,7 +66,7 @@ I/O memory map:
     of x6502 is provided in test-programs/echo.s.
 
 TODO:
-    - support configurable base addresses
     - switch to Makefiles like a real person
     - support buffered input, where the program can read
       more than one input character at once.
+    - graphics? definitely more I/O.
