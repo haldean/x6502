@@ -1,4 +1,3 @@
-// CALL MARK_DIRTY IN HERE!
 case INC_AB:
     arg1 = NEXT_BYTE(m);
     arg2 = NEXT_BYTE(m);
