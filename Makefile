@@ -1,6 +1,6 @@
 CC=clang
 PYTHON=python
-COPTS=-o x6502 -O3 -lpthread -Wall
+COPTS=-o x6502 -O3 -lpthread -lSDL -Wall
 DEBUGOPTS=-DDEBUG -O0 -g
 
 all: release

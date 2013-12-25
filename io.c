@@ -7,6 +7,7 @@
 #include <termios.h>
 
 #include "functions.h"
+#include "video.h"
 
 #define INPUT_BUFFER_SIZE 1024
 
@@ -53,7 +54,7 @@ void finish_io() {
     tcsetattr(fileno(stdin), TCSANOW, &tty_restore);
 }
 
-void handle_io(cpu *m) {
+int handle_io(cpu *m) {
     if (next_read != next_write) {
         m->interrupt_waiting = 0x01;
         m->mem[IO_GETCHAR] = input_buffer[next_read++];
@@ -64,9 +65,10 @@ void handle_io(cpu *m) {
 
     if (get_emu_flag(m, EMU_FLAG_DIRTY)) {
         if (m->dirty_mem_addr == IO_PUTCHAR) {
-            uint8_t val = m->mem[m->dirty_mem_addr];
-            putchar(val);
+            putchar(m->mem[m->dirty_mem_addr]);
             fflush(stdout);
         }
     }
+
+    return handle_video(m);
 }

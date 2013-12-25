@@ -74,7 +74,12 @@ void main_loop(cpu *m) {
         }
         m->pc += branch_offset;
 
-        handle_io(m);
+        switch (handle_io(m)) {
+            case IO_OK:
+                break;
+            case IO_HALT:
+                goto end;
+        }
 
         if (m->interrupt_waiting && !get_flag(m, FLAG_INTERRUPT)) {
             STACK_PUSH(m) = (m->pc & 0xFF00) >> 8;
