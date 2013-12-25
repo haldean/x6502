@@ -15,6 +15,10 @@
     they expect I/O devices to be mapped into memory where
     there are currently none.
 
+    x6502 is freely available under the original 4-clause
+    BSD license, the full text of which is included in the
+    LICENSE file.
+
 Building and running x6502
 
     To build x6502, just run `make' in the project root. You
