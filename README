@@ -131,6 +131,14 @@ Reading the source
     fascinating function consisting of almost nothing but
     printfs.
 
+Running with vagrant (mostly for windows users)
+    First of all you'll need vagrant installed.
+    Execute ``vagrant up'' from the project directory. Wait
+    for the VM to boot. SSH to 192.168.66.120 with
+    vagrant/vagrant. Change to directory ``/vagrant'' and run
+    ``make''. Now you're ready to execute test programs. For
+    example ``./x6502 sample_programs/alphabet.o''
+
 TODO:
     - support buffered input, where the program can read
       more than one input character at once.
