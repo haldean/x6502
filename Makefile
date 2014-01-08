@@ -4,8 +4,8 @@ DEBUGOPTS=-DDEBUG -O0 -g
 
 all: release
 
-debug-names.h: generate-debug-names opcodes.h
-	./generate-debug-names < opcodes.h > debug-names.h
+debug-names.h: generate_debug_names opcodes.h
+	./generate_debug_names < opcodes.h > debug-names.h
 
 release: debug-names.h *.c *.h
 	$(CC) $(COPTS) *.c
