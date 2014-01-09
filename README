@@ -56,6 +56,11 @@ Extensions to the 6502 instruction set
     -DDISABLE_EXTENSIONS (right now, this can be done by
     adding that flag to the Makefile).
 
+    This also implements a subset of the 65C02 and 65C816
+    instruction set, in particular the WAI (0xCB)
+    instruction. The WAI instruction pauses the emulator
+    until an I/O interrupt is thrown.
+
 I/O memory map:
 
     There are only two I/O devices right now: a character

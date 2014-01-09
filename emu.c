@@ -26,6 +26,10 @@ void main_loop(cpu *m) {
     // after we move to the next instruction
     int8_t branch_offset = 0;
 
+    // if set to true, the next instruction will not be executed until an
+    // interrupt is fired from the IO bus and handled.
+    uint8_t wait_for_interrupt = 0;
+
     init_io();
 
     for (;;) {
@@ -56,6 +60,7 @@ void main_loop(cpu *m) {
             #include "opcode_handlers/compare.h"
             #include "opcode_handlers/flags.h"
             #include "opcode_handlers/incdec.h"
+            #include "opcode_handlers/interrupts.h"
             #include "opcode_handlers/jump.h"
             #include "opcode_handlers/load.h"
             #include "opcode_handlers/logical.h"
@@ -74,7 +79,10 @@ void main_loop(cpu *m) {
         }
         m->pc += branch_offset;
 
-        handle_io(m);
+        do {
+            handle_io(m);
+        } while (wait_for_interrupt && !m->interrupt_waiting);
+        wait_for_interrupt = 0;
 
         if (m->interrupt_waiting && !get_flag(m, FLAG_INTERRUPT)) {
             STACK_PUSH(m) = (m->pc & 0xFF00) >> 8;

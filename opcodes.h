@@ -218,4 +218,6 @@
 #define TXS     0x9A
 #define TYA     0x98
 
+#define WAI     0xCB
+
 #endif

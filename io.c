@@ -7,10 +7,12 @@
 
 #include "functions.h"
 
-#define VTERM_ROWS 40
-#define VTERM_COLS 25
+#define VTERM_ROWS 25
+#define VTERM_COLS 40
 
 uint8_t io_modeflags = 0x00;
+
+WINDOW *window = NULL;
 
 void init_vterm();
 void update_vterm(cpu *, uint16_t);
@@ -33,15 +35,12 @@ void init_vterm() {
     initscr();
     // reinit IO after initializing the ncurses window
     init_io();
+
+    window = newwin(VTERM_ROWS + 2, VTERM_COLS + 2, 0, 0);
+    box(window, 0, 0);
 }
 
 void finish_vterm() {
-    if (io_modeflags & IO_MODEFLAG_WAIT_TERMINATE) {
-        // wait for user to hit enter to quit
-        printw("\nterminated. hit any key to exit.");
-        nodelay(stdscr, FALSE);
-        getch();
-    }
     endwin();
 }
 
@@ -63,9 +62,11 @@ void update_vterm(cpu *m, uint16_t dirty) {
         // this is in the unused 24 bytes at the end of the page, ignore it
         return;
     }
-    uint8_t r = offset / VTERM_COLS;
-    uint8_t c = offset % VTERM_COLS;
-    mvprintw(r, c, "%c", m->mem[dirty]);
+    // 1 offsets to avoid overwriting the border
+    uint8_t r = offset / VTERM_COLS + 1;
+    uint8_t c = offset % VTERM_COLS + 1;
+    mvwprintw(window, r, c, "%c", m->mem[dirty]);
+    wrefresh(window);
 }
 
 void handle_io(cpu *m) {
@@ -79,8 +80,8 @@ void handle_io(cpu *m) {
         uint16_t addr = m->dirty_mem_addr;
         if (addr == IO_PUTCHAR) {
             if (io_modeflags & IO_MODEFLAG_VTERM) {
-                addch(m->mem[addr]);
-                refresh();
+                wprintw(window, "%c", m->mem[addr]);
+                wrefresh(window);
             } else {
                 printf("%c", m->mem[addr]);
             }

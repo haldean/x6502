@@ -9,8 +9,7 @@
 #define IO_VTERM_START 0xFB00
 #define IO_VTERM_END   0xFF00
 
-#define IO_MODEFLAG_WAIT_TERMINATE 0x01
-#define IO_MODEFLAG_VTERM          0x02
+#define IO_MODEFLAG_VTERM          0x01
 
 void init_io();
 void finish_io();
