@@ -87,13 +87,37 @@ I/O memory map:
             this flag, as some implementations of ncurses
             will clear the display when the emulator exits.
 
+    When outputting characters, you can control the
+    ``paint'' with which the characters are drawn. You can
+    do so by modifying the PAINT flag at location 0xFEE8.
+    Paints are an OR-ing of a color (bottom 4 bits) and a
+    style (top 4 bits). Supported colors are:
+
+                PAINT_BLACK         0x00
+                PAINT_RED           0x01
+                PAINT_GREEN         0x02
+                PAINT_YELLOW        0x03
+                PAINT_BLUE          0x04
+                PAINT_MAGENTA       0x05
+                PAINT_CYAN          0x06
+                PAINT_WHITE         0x07
+
+    Supported styles are:
+
+                PAINT_DIM           0x20
+                PAINT_UNDERLINE     0x40
+                PAINT_BOLD          0x80
+
+    Thus, as an example, an underlined, bold green character
+    would have paint 0xC2.
+
 I/O devices:
 
-    The character output device is mapped to FF00. Any
+    The character output device is mapped to 0xFF00. Any
     character written to FF00 is immediately echoed to the
     terminal.
 
-    The character input device is mapped to FF01. When a
+    The character input device is mapped to 0xFF01. When a
     character is available on standard in, an interrupt is
     raised and FF01 is set to the character that was
     received. Note that one character is delivered per

@@ -11,6 +11,7 @@
 #define VTERM_COLS 40
 
 uint8_t io_modeflags = 0x00;
+uint8_t io_supports_paint;
 
 WINDOW *window = NULL;
 
@@ -24,6 +25,14 @@ void init_io() {
     noecho();
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
+
+    io_supports_paint = (has_colors() != FALSE);
+    if (io_supports_paint) {
+        start_color();
+        for (int i = 0; i < 8; i++) {
+            init_pair(i, i, COLOR_BLACK);
+        }
+    }
 }
 
 void finish_io() {
@@ -59,6 +68,14 @@ void update_modeflags(uint8_t old_flags, uint8_t new_flags) {
     }
 }
 
+void update_paint(uint8_t paint) {
+    wattrset(window,
+            COLOR_PAIR(paint & 0x0F) |
+            (paint & IO_PAINT_DIM ? A_DIM : 0) |
+            (paint & IO_PAINT_UNDERLINE ? A_UNDERLINE : 0) |
+            (paint & IO_PAINT_BOLD ? A_BOLD : 0));
+}
+
 void update_vterm(cpu *m, uint16_t dirty) {
     uint16_t offset = dirty - IO_VTERM_START;
     if (offset >= 1000) {
@@ -90,6 +107,8 @@ void handle_io(cpu *m) {
             }
         } else if (addr == IO_MODEFLAGS) {
             update_modeflags(io_modeflags, m->mem[IO_MODEFLAGS]);
+        } else if (addr == IO_PAINT) {
+            update_paint(m->mem[addr]);
         } else if (IO_VTERM_START <= addr && addr < IO_VTERM_END) {
             update_vterm(m, addr);
         }
