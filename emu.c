@@ -26,10 +26,6 @@ void main_loop(cpu *m) {
     // after we move to the next instruction
     int8_t branch_offset = 0;
 
-    // if set to true, the next instruction will not be executed until an
-    // interrupt is fired from the IO bus and handled.
-    uint8_t wait_for_interrupt = 0;
-
     init_io();
 
     for (;;) {
@@ -81,8 +77,11 @@ void main_loop(cpu *m) {
 
         do {
             handle_io(m);
-        } while (wait_for_interrupt && !m->interrupt_waiting);
-        wait_for_interrupt = 0;
+            // clear dirty memory flag immediately so that subsequent runs don't
+            // redo whatever I/O operation is associated with the dirty memaddr
+            m->emu_flags &= ~EMU_FLAG_DIRTY;
+        } while ((m->emu_flags & EMU_FLAG_WAIT_FOR_INTERRUPT) &&
+                 !m->interrupt_waiting);
 
         if (m->interrupt_waiting && !get_flag(m, FLAG_INTERRUPT)) {
             STACK_PUSH(m) = (m->pc & 0xFF00) >> 8;

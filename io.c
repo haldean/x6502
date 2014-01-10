@@ -25,6 +25,7 @@ void init_io() {
     noecho();
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
+    curs_set(0);
 
     io_supports_paint = (has_colors() != FALSE);
     if (io_supports_paint) {
@@ -50,6 +51,7 @@ void finish_io() {
 void init_vterm() {
     window = newwin(VTERM_ROWS + 2, VTERM_COLS + 2, 0, 0);
     box(window, 0, 0);
+    wrefresh(window);
 }
 
 void finish_vterm() {
@@ -59,6 +61,7 @@ void finish_vterm() {
 void update_modeflags(uint8_t old_flags, uint8_t new_flags) {
     io_modeflags = new_flags;
 
+    // if the vterm flag changed (avoids reinit every time flags change)
     if ((new_flags ^ old_flags) & IO_MODEFLAG_VTERM) {
         if (new_flags & IO_MODEFLAG_VTERM) {
             init_vterm();

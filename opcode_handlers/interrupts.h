@@ -10,5 +10,5 @@ case RTI:
     break;
 
 case WAI:
-    wait_for_interrupt = 1;
+    m->emu_flags |= EMU_FLAG_WAIT_FOR_INTERRUPT;
     break;

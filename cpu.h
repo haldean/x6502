@@ -14,7 +14,10 @@
 #define FLAG_ZERO 0x02
 #define FLAG_CARRY 0x01
 
+// set if memory was modified during processing of the last instruction
 #define EMU_FLAG_DIRTY 0x01
+// set if the emulator should wait for an interrupt before continuing
+#define EMU_FLAG_WAIT_FOR_INTERRUPT 0x02
 
 typedef struct {
     // program counter

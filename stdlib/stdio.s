@@ -2,6 +2,8 @@
 
 putc = $FF00
 getc = $FF01
+iomode = $FF02
+paint = $FEE8
 
 #define debug .byt $FC
 #define ext .byt $FF
