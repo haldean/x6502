@@ -1,4 +1,4 @@
-        lda     #$01    ; set WAIT_TERMINATE flag
+        lda     #$02    ; set WAIT_TERMINATE flag
         sta     $FF02
         lda     #$41    ; 41 == 'A'
         sta     $FF00

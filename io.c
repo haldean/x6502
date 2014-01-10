@@ -19,6 +19,7 @@ void update_vterm(cpu *, uint16_t);
 void finish_vterm();
 
 void init_io() {
+    initscr();
     cbreak();
     noecho();
     nodelay(stdscr, TRUE);
@@ -26,16 +27,18 @@ void init_io() {
 }
 
 void finish_io() {
+    if (io_modeflags & IO_MODEFLAG_WAIT_HALT) {
+        nodelay(stdscr, FALSE);
+        printw("\nterminated, press any key to exit.\n");
+        getch();
+    }
+
     if (io_modeflags & IO_MODEFLAG_VTERM) {
         finish_vterm();
     }
 }
 
 void init_vterm() {
-    initscr();
-    // reinit IO after initializing the ncurses window
-    init_io();
-
     window = newwin(VTERM_ROWS + 2, VTERM_COLS + 2, 0, 0);
     box(window, 0, 0);
 }
@@ -83,7 +86,7 @@ void handle_io(cpu *m) {
                 wprintw(window, "%c", m->mem[addr]);
                 wrefresh(window);
             } else {
-                printf("%c", m->mem[addr]);
+                addch(m->mem[addr]);
             }
         } else if (addr == IO_MODEFLAGS) {
             update_modeflags(io_modeflags, m->mem[IO_MODEFLAGS]);

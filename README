@@ -7,13 +7,13 @@
 
     x6502 is an emulator for the 6502 class of processors.
     It currently supports the full instruction set of the
-    6502 (plus a few extensions) and has an extremely
-    rudimentary simulated I/O bus. It should be able to run
-    arbitrary x6502 bytecode with ``correct'' results,
-    although most binaries for common 6502 systems (Atari,
-    C64, Apple II, etc) won't function as expected, since
-    they expect I/O devices to be mapped into memory where
-    there are currently none.
+    6502 (plus a few extensions) and has a rudimentary
+    simulated I/O bus. It should be able to run arbitrary
+    x6502 bytecode with ``correct'' results, although most
+    binaries for common 6502 systems (Atari, C64, Apple II,
+    etc) won't function as expected, since they expect I/O
+    devices to be mapped into memory where there are
+    currently none.
 
     x6502 is freely available under the original 4-clause
     BSD license, the full text of which is included in the
@@ -32,15 +32,18 @@ Building and running x6502
     bytecode, see below). You can use any 6502 assembler to
     compile to 6502 bytecode; `xa' is one that is bundled
     with Debian-based distros. Note that, by default, x6502
-    loads code in at address 0x00; you therefore need to
+    loads code in at address 0x1000; you therefore need to
     either tell your assembler that that's the base address
     for the text section of your binary or override the
-    default load address using the `-b' flag of x6502.
+    default load address using the `-b' flag of x6502. Note
+    that 0x1000 is the default load address for the `xa'
+    assembler.
 
     If you want to compile a version of x6502 that dumps
     machine state after every instruction, run `make debug'
     instead of `make'. This will also disable compiler
-    optimizations.
+    optimizations. This mode really does not play nice with
+    vterm mode, so be warned.
 
 Extensions to the 6502 instruction set
 
@@ -63,13 +66,29 @@ Extensions to the 6502 instruction set
 
 I/O memory map:
 
-    There are only two I/O devices right now: a character
-    input device and a character output device. Convenience
-    constants and macros for all I/O devices are defined in
-    `stdlib/stdio.s' for use in user programs. Add stdlib to
-    your include path and then add `#include <stdio.s>' to
-    your program to use these constants.
-    
+    There are three I/O devices right now: a character input
+    device, a character output device and a virtual
+    terminal. Convenience constants and macros for the
+    character I/O devices are defined in `stdlib/stdio.s'
+    for use in user programs. Add stdlib to your include
+    path and then add `#include <stdio.s>' to your program
+    to use these constants.
+
+    I/O options are controlled by setting bits on the I/O
+    flag byte at address 0xFF02. The current set of
+    supported flags are:
+
+        VTERM_ENABLE (0x01):
+            when set, activates vterm mode.
+        WAIT_HALT (0x02):
+            when set, waits for a keypress input before
+            terminating upon receiving an EXT instruction.
+            Non-vterm applications will probably want to set
+            this flag, as some implementations of ncurses
+            will clear the display when the emulator exits.
+
+I/O devices:
+
     The character output device is mapped to FF00. Any
     character written to FF00 is immediately echoed to the
     terminal.
@@ -81,8 +100,22 @@ I/O memory map:
     interrupt; if the user types ``abc'', they will get
     three interrupts one after the other.
 
-    A commented example of how to use the I/O capabilities
-    of x6502 is provided in sample_programs/echo.s.
+    The virtual terminal is activated by setting the
+    VTERM_ENABLE bit on the IO flag byte. After the flag is
+    set, the data in memory addresses 0xFB00 through 0xFEE7
+    are mapped to a 40x25 grid in the host terminal. Data in
+    this region is stored in row-major format, and any write
+    will trigger a refresh of the vterm.
+
+    Note that even in vterm-mode, the putchar-esque
+    character output device is still usable, and will put
+    the character at the position directly after the
+    position of the last write.
+
+    A commented example of how to use the character I/O
+    capabilities of x6502 is provided in
+    sample_programs/echo.s, and an example of a vterm
+    application is provided in sample_programs/spam.s
 
 Reading the source
 
@@ -91,7 +124,7 @@ Reading the source
     constants used throughout the code (mostly around CPU
     flags) as well as the `cpu' struct, which is used pretty
     much everywhere.
-    
+
     `emu.c' is where the interesting stuff happens; this is
     the main loop of the emulator where opcodes are decoded
     as dispatched. It also handles interrupts and calls out
@@ -139,10 +172,12 @@ Reading the source
 TODO:
     - support buffered input, where the program can read
       more than one input character at once.
-    - graphics? definitely more I/O.
+    - paint options in vterm mode. Now that we're using
+      ncurses, it's way easier to do pretty output.
 
 THANKS:
     - voltagex on Github for sending me a patch to improve
       the sample_programs readme.
     - anatoly on HN for suggesting I add a bit on source
       code structure to the README.
+    - shalmanese for coffee and pie.

@@ -16,7 +16,7 @@ void usage() {
 }
 
 int main(int argc, char *argv[]) {
-    int base_addr = 0;
+    int base_addr = 0x1000;
 
     int c;
     while ((c = getopt(argc, argv, "hb:")) != -1) {
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
     FILE *in_f = fopen(argv[optind], "rb");
     int b;
     int i = base_addr;
-    cpu *m = new_cpu();
+    cpu *m = new_cpu(base_addr);
     while ((b = fgetc(in_f)) != EOF) {
         m->mem[i++] = (uint8_t) b;
     }

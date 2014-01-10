@@ -39,6 +39,6 @@ typedef struct {
     uint8_t last_opcode;
 } cpu;
 
-cpu * new_cpu();
+cpu * new_cpu(uint16_t pc_start);
 
 #endif

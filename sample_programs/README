@@ -1,6 +1,6 @@
 Test 6502 assembler programs. Generate binaries with:
 
-xa -w -bt0 -Istdlib/ sample_programs/test.s
+xa -w -bt 0x0100 -Istdlib/ sample_programs/test.s
 
 xa is a cross-assembler and utility suite for 65xx series processors. It's
 included in many package repositories as `xa65', including Homebrew on OSX in

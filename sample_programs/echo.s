@@ -10,7 +10,7 @@
         cli
 
 ; wait for input
-loop    nop
+loop    wai
         jmp     loop
 
 ; start ISR
