@@ -1,5 +1,8 @@
 #include <stdio.s>
 
+; $00   low byte of character address
+; $01   high byte of character address
+
 rows = 25
 cols = 40
 
@@ -50,42 +53,68 @@ checkj:
         cmp     #$6A    ; 6A == 'j'
         bne     checkk
         ; it's a j. move down.
-        tya
         clc
+
+        lda     $00
         adc     #cols
+        sta     $00
+
+        lda     $01
+        adc     #$00
+        sta     $01
+
         jmp     checkbounds
 
 checkk:
         cmp     #$6B    ; 6B == 'k'
         bne     checkh
         ; it's a k. move up.
-        tya
         sec
+
+        lda     $00
         sbc     #cols
+        sta     $00
+
+        lda     $01
+        sbc     #$00
+        sta     $01
+
         jmp     checkbounds
 
 checkh:
         cmp     #$68    ; 68 == 'h'
         bne     checkl
         ; it's an h. move left.
-        tya
         sec
+
+        lda     $00
         sbc     #$02
+        sta     $00
+
+        lda     $01
+        sbc     #$00
+        sta     $01
+
         jmp     checkbounds
 
 checkl:
         cmp     #$6C    ; 6C == 'l'
         bne     done
-        ; it's an h. move left.
-        tya
+        ; it's an l. move right.
         clc
+
+        lda     $00
         adc     #$02
+        sta     $00
+
+        lda     $01
+        adc     #$00
+        sta     $01
+
         jmp     checkbounds
 
 checkbounds:
-        ; TODO
-        tay
-
+checked:
 done:
         pla
         rti

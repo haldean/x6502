@@ -101,6 +101,12 @@ void handle_io(cpu *m) {
 
     if (get_emu_flag(m, EMU_FLAG_DIRTY)) {
         uint16_t addr = m->dirty_mem_addr;
+
+#ifdef DEBUG
+        fprintf(stderr, "dirty address %04X has value %02x\n",
+                addr, m->mem[addr]);
+#endif
+
         if (addr == IO_PUTCHAR) {
             if (io_modeflags & IO_MODEFLAG_VTERM) {
                 wprintw(window, "%c", m->mem[addr]);
