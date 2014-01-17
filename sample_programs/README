@@ -6,3 +6,17 @@ xa is a cross-assembler and utility suite for 65xx series processors. It's
 included in many package repositories as `xa65', including Homebrew on OSX in
 the Debian repositories. The source is available at
 http://www.floodgap.com/retrotech/xa/
+
+Sample programs:
+
+        alphabet.s      Prints A through Z to the terminal. Demonstrates basic
+                        terminal output.
+        colors.s        Prints a bunch of A's in different colors using vterm
+                        mode. Demonstrates paints and vterm output.
+        echo.s          Echos everything read from stdin to stdout, transforming
+                        letters into uppercase. Demonstrates terminal input.
+        minigame.s      Move a character around a vterm with hjkl. Demonstrates
+                        a more complex vterm application.
+        spam.s          Writes A through Z repeatedly, filling the vterm.
+                        Demonstrates vterm output and how to do indirect
+                        addressing to address the whole vterm.
