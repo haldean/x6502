@@ -196,8 +196,6 @@ Reading the source
 TODO:
     - support buffered input, where the program can read
       more than one input character at once.
-    - paint options in vterm mode. Now that we're using
-      ncurses, it's way easier to do pretty output.
 
 THANKS:
     - voltagex on Github for sending me a patch to improve
@@ -205,3 +203,4 @@ THANKS:
     - anatoly on HN for suggesting I add a bit on source
       code structure to the README.
     - shalmanese for coffee and pie.
+    - daumiller for finding the subtraction bug.
