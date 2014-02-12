@@ -2,6 +2,7 @@
 
 #include <ncurses.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/select.h>
 #include <sys/time.h>
 
@@ -13,11 +14,17 @@
 uint8_t io_modeflags = 0x00;
 uint8_t io_supports_paint;
 
+FILE *blck0 = NULL;
+
 WINDOW *window = NULL;
 
 void init_vterm();
 void update_vterm(cpu *, uint16_t);
 void finish_vterm();
+
+void set_block_source(FILE *source) {
+    blck0 = source;
+}
 
 void init_io() {
     initscr();
@@ -43,9 +50,7 @@ void finish_io() {
         getch();
     }
 
-    if (io_modeflags & IO_MODEFLAG_VTERM) {
-        finish_vterm();
-    }
+    endwin();
 }
 
 void init_vterm() {
@@ -101,11 +106,7 @@ void handle_io(cpu *m) {
 
     if (get_emu_flag(m, EMU_FLAG_DIRTY)) {
         uint16_t addr = m->dirty_mem_addr;
-
-#ifdef DEBUG
-        fprintf(stderr, "dirty address %04X has value %02x\n",
-                addr, m->mem[addr]);
-#endif
+        debugf("dirty address %04X has value %02x\n", addr, m->mem[addr]);
 
         if (addr == IO_PUTCHAR) {
             if (io_modeflags & IO_MODEFLAG_VTERM) {
@@ -120,6 +121,33 @@ void handle_io(cpu *m) {
             update_paint(m->mem[addr]);
         } else if (IO_VTERM_START <= addr && addr < IO_VTERM_END) {
             update_vterm(m, addr);
+        } else if (addr == IO_BLCK0_ADDRL
+                || addr == IO_BLCK0_ADDRH
+                || addr == IO_BLCK0_READ) {
+            if (blck0 == NULL) {
+                finish_vterm();
+                fprintf(stderr, "tried to read from unattached block device\n");
+                exit(-1);
+                return;
+            }
+
+            uint16_t read_addr =
+                    m->mem[IO_BLCK0_ADDRH] << 8 | m->mem[IO_BLCK0_ADDRL];
+            int res = fseek(blck0, read_addr, SEEK_SET);
+            if (res) {
+                debugf("ERROR: fseek returned %d\n", res);
+                m->mem[IO_BLCK0_ERR] = IO_BLCK_ERR_SEEK;
+                return;
+            }
+
+            res = fgetc(blck0);
+            if (res == EOF) {
+                debugf("ERROR: fgetc returned EOF\n");
+                m->mem[IO_BLCK0_ERR] = IO_BLCK_ERR_EOF;
+                return;
+            }
+            m->mem[IO_BLCK0_READ] = 0xFF & res;
+            m->mem[IO_BLCK0_ERR] = 0x00;
         }
     }
 }
