@@ -66,13 +66,13 @@ Extensions to the 6502 instruction set
 
 I/O memory map:
 
-    There are three I/O devices right now: a character input
-    device, a character output device and a virtual
-    terminal. Convenience constants and macros for the
-    character I/O devices are defined in `stdlib/stdio.s'
-    for use in user programs. Add stdlib to your include
-    path and then add `#include <stdio.s>' to your program
-    to use these constants.
+    There are four I/O devices right now: a character input
+    device, a character output device, a virtual terminal
+    and a block device. Convenience constants and macros for
+    the character I/O devices are defined in
+    `stdlib/stdio.s' for use in user programs. Add stdlib to
+    your include path and then add `#include <stdio.s>' to
+    your program to use these constants.
 
     I/O options are controlled by setting bits on the I/O
     flag byte at address 0xFF02. The current set of
@@ -140,6 +140,18 @@ I/O devices:
     capabilities of x6502 is provided in
     sample_programs/echo.s, and an example of a vterm
     application is provided in sample_programs/spam.s
+
+    A block device can be mapped in with control addresses
+    at 0xFF03 through 0xFF07. To use the block device, you
+    must specify a binary disk image to back the device
+    using the -d flag. To read from the block device, write
+    an address in the disk image to 0xFF03 and 0xFF04, with
+    the low byte in 0xFF03. The value at that location in
+    the disk image will be written to 0xFF05, which your
+    program can then read. To write, set the memory address
+    to write to using the same method, then write the
+    desired byte to 0xFF06. If any of these operations
+    return an error, the byte at 0xFF07 will be nonzero.
 
 Reading the source
 

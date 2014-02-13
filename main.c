@@ -52,8 +52,8 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    debugf("using %s as a backing file for block device 0\n", blck0_file);
     if (blck0_file != NULL) {
+        debugf("using %s as a backing file for block device 0\n", blck0_file);
         FILE *blck0 = fopen(blck0_file, "r+");
         if (blck0 == NULL) {
             fprintf(stderr, "block file %s does not exist.\n", blck0_file);
