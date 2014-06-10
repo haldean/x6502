@@ -5,38 +5,29 @@
         ora     vflag_enable
         sta     vflag
 
- ; load color table (all red)
-        lda     #%00000001
-        ldx     #$00
-ctab:   sta     $EF40,X
-        debug
-        inx
-        ina
-        cpx     #$10
-        bne     ctab
+ ; load color table
+ ; 00: red
+ ; 01: green
+ ; 02: blue
+        lda     #%11100000
+        sta     $EF40
+        lda     #%00011100
+        sta     $EF41
+        lda     #%00000011
+        sta     $EF42
 
+loop:
         ldx     #$00
         lda     #$00
-ld:     sta     $D000,X
-        inx
-        jsr     next
-        cpx     #$FF
-        bne     ld
 
- ; flip display
+ld1:    sta     $D000,X
+        inx
+        cpx     #$FF
+        bne     ld1
+
         lda     vflag
-        ora     #$02
+        ora     vflag_flip
         sta     vflag
 
-loop:   nop
-        jmp loop
-
-next:   and     #$0F
-        adc     #$01
-        sta     $0200
-        asl
-        asl
-        asl
-        asl
-        ora     $0200
-        rts
+jnop:   nop
+        jmp jnop

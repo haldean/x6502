@@ -5,6 +5,7 @@ getc            = $FF01
 
 vflag           = $FF02
 vflag_enable    = $01
+vflag_flip      = $02
 
 #define debug .byt $FC
 #define ext .byt $FF

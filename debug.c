@@ -6,6 +6,7 @@
 #define MAX_MEM_OFFSET (MEMORY_SIZE - MEM_PRINT_BYTES)
 
 void dump_cpu(cpu *m) {
+    return;
     init_names();
 
     int i;

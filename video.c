@@ -13,8 +13,18 @@ SDL_Event last_event;
 
 uint32_t color_table[IO_VCOLORS];
 
-void flip_video() {
-    printf("flip\n");
+void flip_video(cpu *m) {
+    uint16_t i;
+    uint16_t mem_addr;
+    uint8_t color;
+
+    SDL_LockSurface(output);
+    for (i = 0; i < IO_VPIXELS; i++) {
+        mem_addr = i / 2 + IO_VSTART;
+        color = 0x0F & (m->mem[mem_addr] >> (i % 2 ? 4 : 0));
+        ((uint32_t *) output->pixels)[i] = color_table[color];
+    }
+    SDL_UnlockSurface(output);
     SDL_Flip(output);
 }
 
@@ -25,24 +35,17 @@ void update_pixel(cpu *m, uint8_t changed_addr) {
 void update_ctable(cpu *m) {
     uint16_t i;
     uint16_t mem_addr;
-    uint8_t color;
 
+    printf("ctab: ");
     for (i = 0; i < IO_VCOLORS; i++) {
         mem_addr = i + IO_VCTABS;
-        color_table[i] = (IO_VBBITS & m->mem[mem_addr]) << 6;
+        color_table[i] = (IO_VRBITS & m->mem[mem_addr]) << 16;
         color_table[i] |= (IO_VGBITS & m->mem[mem_addr]) << 11;
-        color_table[i] |= (IO_VRBITS & m->mem[mem_addr]) << 16;
+        color_table[i] |= (IO_VBBITS & m->mem[mem_addr]) << 6;
         printf("%08X  ", color_table[i]);
     }
     printf("\n");
-
-    SDL_LockSurface(output);
-    for (i = 0; i < IO_VPIXELS; i++) {
-        mem_addr = i / 2 + IO_VSTART;
-        color = 0x0F & (m->mem[mem_addr] >> (i % 2 ? 4 : 0));
-        ((uint32_t *) output->pixels)[i] = color_table[color];
-    }
-    SDL_UnlockSurface(output);
+    flip_video(m);
 }
 
 void init_video(cpu *m) {
@@ -81,7 +84,7 @@ int handle_video(cpu *m) {
             }
 
             if (val & IO_VFLAG_FLIP) {
-                flip_video();
+                flip_video(m);
                 m->mem[addr] ^= IO_VFLAG_FLIP;
             }
         } else if (IO_VSTART <= addr && addr < IO_VEND) {
