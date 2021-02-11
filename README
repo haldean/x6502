@@ -24,7 +24,8 @@ Building and running x6502
     To build x6502, just run `make' in the project root. You
     will need clang and Python installed. To use gcc, change
     the $(CC) var in the Makefile. No libraries beyond POSIX
-    libc are used. This will produce the x6502 binary.
+    libc are used except ncurses. This will produce the
+    x6502 binary.
 
     x6502 takes the compiled 6502 object file as an
     argument, and runs it until it encounters an EXT
